@@ -1,98 +1,1001 @@
-/* mrdchemistry.com landing page — layered on top of the shared site.css */
+/*
+  mrdchemistry.com landing page ("Lively Lab") — layered on top of the shared site.css.
+  Colours come from the tokens in site.css. Every animation here moves only
+  transform/opacity, and all of it switches off for prefers-reduced-motion.
+*/
+
+body.home {
+  position: relative;
+}
+
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Floating molecules + bubbles (behind everything) ---------- */
+
+.lab-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* holds the shared <symbol>s; must not be display:none or the gradient breaks */
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.mol,
+.fizz {
+  position: absolute;
+  display: block;
+  height: auto;
+}
+
+.mol {
+  opacity: 0.3;
+  animation: drift-a 18s ease-in-out infinite;
+}
+
+.mol-1 { top: 104px; left: 2%; width: 96px; animation-duration: 19s; animation-delay: -4s; }
+.mol-2 { top: 560px; right: 1.5%; width: 128px; animation-name: drift-b; animation-duration: 23s; animation-delay: -9s; }
+.mol-3 { top: 64px; right: 3%; width: 76px; animation-name: drift-c; animation-duration: 21s; }
+.mol-4 { top: 880px; left: 1.5%; width: 86px; animation-name: drift-b; animation-duration: 17s; animation-delay: -6s; }
+.mol-5 { bottom: 300px; right: 2.5%; width: 84px; animation-duration: 25s; animation-delay: -12s; }
+.mol-6 { bottom: 96px; left: 5%; width: 64px; animation-name: drift-c; animation-duration: 20s; animation-delay: -3s; }
+
+.fizz {
+  width: 22px;
+  opacity: 0.5;
+  animation: rise 12s linear infinite;
+}
+
+.fizz-1 { top: 560px; left: 7%; animation-delay: -2s; }
+.fizz-2 { top: 640px; left: 3%; width: 14px; animation-duration: 10s; animation-delay: -7s; }
+.fizz-3 { top: 600px; right: 8%; width: 18px; animation-duration: 14s; animation-delay: -5s; }
+.fizz-4 { top: 700px; right: 3.5%; width: 12px; animation-duration: 9s; animation-delay: -1s; }
+.fizz-5 { top: 430px; right: 24%; width: 16px; animation-name: rise-short; animation-duration: 9s; animation-delay: -4s; }
+
+@keyframes drift-a {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(14px, -22px) rotate(10deg); }
+}
+
+@keyframes drift-b {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-18px, 16px) rotate(-12deg); }
+}
+
+@keyframes drift-c {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, 12px) rotate(7deg); }
+  66% { transform: translate(-8px, -12px) rotate(-6deg); }
+}
+
+@keyframes rise {
+  0% { transform: translate(0, 0) scale(0.7); opacity: 0; }
+  12% { opacity: 0.75; }
+  50% { transform: translate(10px, -210px) scale(0.9); }
+  85% { opacity: 0.55; }
+  100% { transform: translate(-4px, -420px) scale(1.1); opacity: 0; }
+}
+
+/* fizz from Professor Mole's bench: stops behind his speech bubble */
+@keyframes rise-short {
+  0% { transform: translate(0, 0) scale(0.7); opacity: 0; }
+  15% { opacity: 0.75; }
+  50% { transform: translate(-8px, -140px) scale(0.9); }
+  80% { opacity: 0.5; }
+  100% { transform: translate(4px, -280px) scale(1.05); opacity: 0; }
+}
+
+/* ---------- Header ---------- */
+
+.top-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.top-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.top-nav a:hover {
+  color: var(--text);
+  background: var(--glass-strong);
+}
+
+/* ---------- Hero ---------- */
 
 .hero {
-  position: relative;
-  padding: 56px 0 40px;
-  text-align: center;
-}
-.hero-art {
-  display: block;
-  width: min(280px, 70vw);
-  height: auto;
-  margin: 0 auto 20px;
-}
-.hero h2 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(2.2rem, 7vw, 3.6rem);
-  line-height: 1.1;
-  margin: 0 0 14px;
-}
-.hero .lead {
-  max-width: 560px;
-  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  padding: 28px 0 32px;
 }
 
-.paths {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 20px;
-  max-width: 860px;
-  margin: 8px auto 64px;
+.hero h2 {
+  margin: 0 0 14px;
+  font-size: clamp(2.3rem, 1.5rem + 3.4vw, 3.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.fun {
+  color: var(--teal);
+  text-decoration: underline wavy rgba(45, 212, 191, 0.55);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.16em;
+}
+
+.easy {
+  color: var(--amber);
+}
+
+.hero .lead {
+  max-width: 34rem;
+  text-wrap: pretty;
+}
+
+.hero h2,
+.door-title,
+.feature-title {
+  text-wrap: balance;
+}
+
+.door-blurb,
+.feature-blurb {
+  text-wrap: pretty;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
   padding: 0;
   list-style: none;
 }
-.path {
+
+.chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px 5px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(8, 9, 11, 0.6);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.chips li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.chips li:nth-child(2)::before { background: var(--amber); }
+.chips li:nth-child(3)::before { background: var(--violet); }
+
+/* ---------- Professor Mole ---------- */
+
+.mascot {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr);
+  grid-template-areas: "stage say";
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0 0;
+}
+
+.mascot-stage {
+  grid-area: stage;
+  position: relative;
+  width: 148px;
+  height: 148px;
+}
+
+/* soft glowing "porthole" behind him */
+.mascot-stage::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 132px;
+  height: 132px;
+  margin-left: -66px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, rgba(45, 212, 191, 0.28), rgba(45, 212, 191, 0.06) 62%, transparent 72%);
+  box-shadow: inset 0 0 0 1px rgba(45, 212, 191, 0.25);
+}
+
+.mole {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 4px;
+  width: 120px;
+  height: auto;
+  margin-left: -60px;
+  transform-origin: 50% 100%;
+  animation: mole-bob 4.6s ease-in-out infinite;
+}
+
+/* he stands behind the bench, so the bottom of his coat is hidden */
+.bench {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.say {
+  grid-area: say;
+  position: relative;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: #f7f6f3;
+  color: #16181d;
+  font-size: 0.975rem;
+  line-height: 1.45;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  text-wrap: pretty;
+  animation: say-pop 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.say strong {
+  color: #0f766e;
+}
+
+/* the speech-bubble tail (points left at Professor Mole on phones) */
+.say::after {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 38%;
+  width: 16px;
+  height: 16px;
+  background: #f7f6f3;
+  border-radius: 3px;
+  transform: rotate(45deg);
+}
+
+@keyframes mole-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-2deg); }
+}
+
+@keyframes say-pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Big Games / Notes cards ---------- */
+
+.doors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 20px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doors > li {
+  display: flex;
+}
+
+.door {
   --accent: var(--teal);
-  --accent-soft: var(--teal-soft);
+  --accent-glow: rgba(45, 212, 191, 0.28);
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 28px 24px 24px;
-  border-radius: var(--radius);
+  width: 100%;
   border: 1px solid var(--line);
-  background: linear-gradient(180deg, var(--accent-soft), transparent 70%), var(--glass);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)), var(--bg-raised);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.35);
   color: var(--text);
   text-decoration: none;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  transition: transform 0.2s ease;
 }
-.path--notes { --accent: var(--violet); --accent-soft: var(--violet-soft); }
-.path-icon {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: var(--accent-soft);
-  font-size: 1.6rem;
+
+.door--notes {
+  --accent: var(--violet);
+  --accent-glow: rgba(167, 139, 250, 0.28);
 }
-.path-title {
+
+/* accent ring + glow, faded in on hover (opacity only) */
+.door::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 2px var(--accent), 0 22px 50px -12px var(--accent-glow);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.door:hover {
+  color: var(--text);
+}
+
+.door-cover {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 19px 19px 0 0;
+  aspect-ratio: 480 / 200;
+  background: #0b1416;
+}
+
+.door--notes .door-cover {
+  background: #15112a;
+}
+
+.door-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s ease;
+}
+
+.door-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 10px;
+  border: 1px solid rgba(167, 139, 250, 0.6);
+  border-radius: 999px;
+  background: rgba(13, 10, 26, 0.85);
+  color: #ddd6fe;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.door-tag::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+
+.door-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 22px 22px;
+  border-top: 1px solid var(--line);
+}
+
+.door-title {
   font-family: var(--serif);
-  font-size: 1.7rem;
-  margin: 4px 0 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.15;
 }
-.path-blurb {
+
+.door-blurb {
+  margin-bottom: 12px;
   color: var(--muted);
-  margin: 0;
-  line-height: 1.55;
+  line-height: 1.5;
 }
-.path-cta {
+
+.door-cta {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
+  gap: 8px;
   min-height: 44px;
-  margin-top: 8px;
+  margin-top: auto;
   padding: 0 22px;
   border-radius: 999px;
   background: var(--accent);
   color: var(--on-accent);
   font-weight: 700;
 }
-.path-tag {
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.door:focus-visible,
+.feature:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* ---------- Featured games ---------- */
+
+.featured {
+  margin-top: 56px;
+}
+
+.featured-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin-bottom: 12px;
+}
+
+.featured-head h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
+}
+
+.see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.see-all:hover {
+  text-decoration: underline;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature-list > li {
+  display: flex;
+}
+
+.feature {
+  --accent: var(--teal);
+  --accent-soft: var(--teal-soft);
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: start; /* side-by-side cards: tags and titles line up */
+  gap: 14px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)), var(--bg-raised);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.feature--violet {
+  --accent: var(--violet);
+  --accent-soft: var(--violet-soft);
+}
+
+.feature--amber {
+  --accent: var(--amber);
+  --accent-soft: var(--amber-soft);
+}
+
+.feature::after {
+  content: "";
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 2px var(--accent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.feature:hover {
+  color: var(--text);
+}
+
+.feature-art {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 45%, var(--accent-soft), rgba(255, 255, 255, 0.02) 75%);
+}
+
+.feature-art img {
+  display: block;
+  width: 58px;
+  height: auto;
+}
+
+.feature-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.feature-tag {
+  color: var(--accent);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--accent);
 }
-.path:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
-@media (hover: hover) {
-  .path:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+.feature-title {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
+
+.feature-blurb {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.feature-go {
+  display: none;
+  align-self: center;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: 72px;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(45, 212, 191, 0.05), transparent 70%), rgba(255, 255, 255, 0.015);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-top: 24px;
+  padding-bottom: 28px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.footer-brand .brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.footer-brand strong {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+}
+
+.footer-tagline {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.footer-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-nav a:hover {
+  background: var(--glass-strong);
+  color: var(--text);
+}
+
+.footer-legal {
+  flex-basis: 100%;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* ---------- "A · B" lists (feature tags, footer line) ----------
+   The dot is drawn in the gap before each item. When the line wraps, the
+   dot in front of the first item on the new line lands outside the box and
+   is clipped, so no line starts or ends with a stray "·". */
+
+.dot-list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.2em;
+  overflow: hidden;
+}
+
+.dot-list > span {
+  white-space: nowrap;
+}
+
+.dot-list > span + span::before {
+  content: "·";
+  content: "·" / "";
+  display: inline-block;
+  width: 1.2em;
+  margin-left: -1.2em;
+  text-align: center;
+}
+
+/* ---------- Hover lift: only on devices that really hover ---------- */
+
+@media (hover: hover) and (pointer: fine) {
+  .door:hover,
+  .feature:hover {
+    transform: translateY(-4px);
+  }
+
+  .door:hover::after,
+  .feature:hover::after {
+    opacity: 1;
+  }
+
+  .door:hover .door-cover img {
+    transform: scale(1.04);
+  }
+
+  .door:hover .arrow,
+  .feature:hover .arrow {
+    transform: translateX(4px);
+  }
+}
+
+/* ---------- Layout by screen size ---------- */
+
+/* tablets and small laptops: the side margins are thin, so the molecules
+   peek in from the edges instead of sitting behind the words */
+@media (min-width: 720px) and (max-width: 1279px) {
+  .mol {
+    opacity: 0.22;
+  }
+
+  /* water floats in the open strip between the logo and the nav */
+  .mol-1 { top: 10px; left: 46%; width: 76px; }
+  .mol-2 { right: -54px; }
+  .mol-3 { top: 128px; right: -34px; width: 72px; }
+  .mol-4 { left: -36px; }
+  .mol-5 { right: -34px; }
+  .mol-6 { left: -22px; }
+
+  .fizz-1 { left: 5px; width: 16px; }
+  .fizz-2 { left: 3px; width: 12px; }
+  .fizz-3 { right: 5px; width: 16px; }
+  .fizz-4 { right: 3px; width: 12px; }
+}
+
+@media (max-width: 899px) {
+  .fizz-5 {
+    display: none;
+  }
+}
+
+/* 900-1279px: the Games/Notes cards fill the width right where CO2 would sit */
+@media (min-width: 900px) and (max-width: 1279px) {
+  .mol-2 {
+    display: none;
+  }
+}
+
+/* phones: keep only a few molecules, tucked into the corners */
+@media (max-width: 719px) {
+  /* Games and Notes stay on the first screen as two outlined pills
+     (beside the logo, or under it on narrow phones) */
+  .top-nav {
+    gap: 8px;
+  }
+
+  .top-nav a {
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid var(--line-strong);
+    background: rgba(8, 9, 11, 0.6);
+    color: var(--text);
+  }
+
+  .top-nav a::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+
+  .top-nav a + a::before {
+    background: var(--violet);
+  }
+
+  .site-header-inner {
+    gap: 14px 20px;
+  }
+
+  .hero {
+    gap: 16px;
+    padding-top: 18px;
+    padding-bottom: 24px;
+  }
+
+  /* slimmer chips so all three fit on one line from 340px up */
+  .chips {
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .chips li {
+    gap: 6px;
+    padding: 4px 11px 4px 9px;
+    font-size: 0.8125rem;
+  }
+
+  .chips li::before {
+    width: 7px;
+    height: 7px;
+  }
+
+  .mol {
+    opacity: 0.2;
+  }
+
+  /* water sits beside "fun and easy", clear of the nav pills */
+  .mol-1 { top: 196px; left: auto; right: -20px; width: 68px; }
+  .mol-6 { bottom: 150px; left: auto; right: -14px; width: 60px; }
+
+  /* the 16px gutters leave no clear spot for these: they would only show
+     as a grey edge behind the cards */
+  .mol-2,
+  .mol-3,
+  .mol-4,
+  .mol-5,
+  .fizz-3,
+  .fizz-5 {
+    display: none;
+  }
+
+  .fizz-1 { top: 520px; left: 1px; width: 14px; }
+  .fizz-2 { top: 600px; left: auto; right: 1px; }
+  .fizz-4 { top: 700px; right: 2px; }
+
+  .feature-tag {
+    letter-spacing: 0.02em;
+  }
+}
+
+@media (max-width: 559px) {
+  .top-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .feature {
+    grid-template-columns: 60px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .feature-art {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+  }
+
+  .feature-art img {
+    width: 48px;
+  }
+}
+
+/* large phones: the nav fits beside the logo, so the headline sits higher */
+@media (min-width: 560px) and (max-width: 719px) {
+  .mol-1 { top: 128px; }
+}
+
+@media (min-width: 560px) {
+  .mascot {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .mascot-stage {
+    width: 200px;
+    height: 196px;
+  }
+
+  .mascot-stage::before {
+    bottom: 26px;
+    width: 176px;
+    height: 176px;
+    margin-left: -88px;
+  }
+
+  .mole {
+    bottom: 6px;
+    width: 160px;
+    margin-left: -80px;
+  }
+
+  .say {
+    max-width: 24rem;
+    font-size: 1.0625rem;
+  }
+
+  .feature {
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    gap: 16px;
+    padding: 14px 18px 14px 14px;
+  }
+
+  .feature-art {
+    width: 88px;
+    height: 88px;
+  }
+
+  .feature-art img {
+    width: 70px;
+  }
+
+  .feature-go {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+}
+
+/* laptops and up: text left, Professor Mole right */
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    align-items: center;
+    gap: 32px;
+    padding: 20px 0 36px;
+  }
+
+  .mascot {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "say"
+      "stage";
+    justify-items: center;
+    gap: 6px;
+    margin: 0;
+  }
+
+  .mascot-stage {
+    width: 340px;
+    height: 244px;
+  }
+
+  .mascot-stage::before {
+    bottom: 22px;
+    width: 228px;
+    height: 228px;
+    margin-left: -114px;
+  }
+
+  .mole {
+    bottom: 13px;
+    width: 216px;
+    margin-left: -108px;
+  }
+
+  .say {
+    justify-self: start;
+    max-width: 300px;
+    margin-left: 4px;
+    font-size: 1rem;
+  }
+
+  /* tail points down at his goggles */
+  .say::after {
+    left: auto;
+    right: 64px;
+    top: auto;
+    bottom: -7px;
+  }
+
+  .doors {
+    gap: 24px;
+  }
+
+  .door-body {
+    padding: 20px 26px 26px;
+  }
+
+  .door-title {
+    font-size: 2rem;
+  }
+}
+
+/* ---------- Reduced motion: everything holds still ---------- */
+
 @media (prefers-reduced-motion: reduce) {
-  .path, .path:hover { transition: none; transform: none; }
+  .mol,
+  .fizz,
+  .mole,
+  .say {
+    animation: none !important;
+  }
+
+  .door,
+  .feature,
+  .door-cover img,
+  .arrow,
+  .door::after,
+  .feature::after {
+    transition: none !important;
+  }
+
+  .door:hover,
+  .feature:hover,
+  .door:hover .door-cover img,
+  .door:hover .arrow,
+  .feature:hover .arrow {
+    transform: none !important;
+  }
 }

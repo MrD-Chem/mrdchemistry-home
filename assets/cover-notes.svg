@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" width="480" height="200">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#261d45"/>
+      <stop offset="1" stop-color="#110e1d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="spine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d9d2ee" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#b9add9"/>
+      <stop offset="1" stop-color="#d9d2ee" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="480" height="200" fill="url(#sky)"/>
+  <ellipse cx="240" cy="110" rx="210" ry="105" fill="url(#glow)"/>
+
+  <!-- sparkles -->
+  <g fill="#fde68a">
+    <path d="M52 34l2.4 6 6 2.4-6 2.4-2.4 6-2.4-6-6-2.4 6-2.4z"/>
+    <path d="M440 150l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>
+  </g>
+  <g fill="#f7f6f3" opacity="0.5">
+    <circle cx="30" cy="120" r="1.5"/><circle cx="96" cy="16" r="1.4"/><circle cx="452" cy="40" r="1.6"/><circle cx="380" cy="14" r="1.3"/>
+  </g>
+
+  <!-- notebook shadow + cover -->
+  <path d="M92 40c50-12 104-10 148 4 44-14 98-16 148-4l12 150c-52-10-106-8-160 6-54-14-108-16-160-6z" fill="#000" opacity="0.35" transform="translate(4 6)"/>
+  <path d="M86 40c50-12 106-10 154 4 48-14 104-16 154-4l12 150c-52-10-110-8-166 6-56-14-114-16-166-6z" fill="#6d28d9"/>
+
+  <!-- pages -->
+  <path d="M240 46c-44-12-96-13-140-3l-9 140c48-8 100-6 149 6z" fill="#f8f6fd"/>
+  <path d="M240 46c44-12 96-13 140-3l9 140c-48-8-100-6-149 6z" fill="#fdfcff"/>
+  <rect x="222" y="44" width="36" height="146" fill="url(#spine)" opacity="0.6"/>
+
+  <!-- ruled lines -->
+  <g fill="none" stroke="#c4b5fd" stroke-width="1.2" opacity="0.8">
+    <path d="M104 74c40-6 88-5 126 2M103 96c40-6 88-5 126 2M101 118c40-6 88-5 128 2M100 140c40-6 88-5 128 2M98 162c40-6 90-5 130 2"/>
+    <path d="M250 76c38-7 86-8 126-2M250 98c38-7 86-8 127-2M251 120c38-7 86-8 128-2M251 142c38-7 86-8 129-2M251 164c38-7 88-8 130-2"/>
+  </g>
+  <path d="M112 52v132" stroke="#fda4af" stroke-width="1.4" opacity="0.7"/>
+
+  <!-- left page: handwritten notes -->
+  <rect x="128" y="102" width="86" height="15" rx="3" fill="#fde047" opacity="0.6" transform="rotate(-2 170 110)"/>
+  <g fill="#3b2a7a" font-family="Georgia, 'Times New Roman', serif" font-style="italic">
+    <text x="116" y="68" font-size="13.5">2H<tspan font-size="9" dy="4">2</tspan><tspan dy="-4"> + O</tspan><tspan font-size="9" dy="4">2</tspan><tspan dy="-4"> → 2H</tspan><tspan font-size="9" dy="4">2</tspan><tspan dy="-4">O</tspan></text>
+    <text x="132" y="114" font-size="15">6.02 × 10<tspan font-size="9" dy="-6">23</tspan></text>
+    <text x="132" y="136" font-size="14" font-style="normal" fill="#6d28d9">= 1 mole</text>
+  </g>
+  <!-- little element tile -->
+  <g transform="translate(136 144)">
+    <rect width="30" height="32" rx="3" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.6"/>
+    <text x="15" y="10" font-size="7" text-anchor="middle" fill="#3b2a7a" font-family="system-ui, sans-serif">6</text>
+    <text x="15" y="24" font-size="14" font-weight="700" text-anchor="middle" fill="#3b2a7a" font-family="system-ui, sans-serif">C</text>
+  </g>
+  <path d="M176 162q10-8 20 0t20 0" fill="none" stroke="#2dd4bf" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- right page: sketches -->
+  <g transform="translate(14 0)">
+  <g fill="none" stroke="#3b2a7a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M276 60v20l-16 30c-2 4 0 8 5 8h38c5 0 7-4 5-8l-16-30V60"/>
+    <path d="M270 60h22"/>
+  </g>
+  <path d="M265 100h33l7 13c1.5 3-.2 5-3 5h-41c-2.8 0-4.5-2-3-5z" fill="#2dd4bf" opacity="0.85"/>
+  <circle cx="280" cy="108" r="2.4" fill="#ccfbf1"/><circle cx="287" cy="102" r="1.6" fill="#ccfbf1"/>
+  </g>
+
+  <g transform="translate(336 66)">
+    <path d="M18 16 6 30M18 16l12 14" stroke="#3b2a7a" stroke-width="2.6" stroke-linecap="round"/>
+    <circle cx="18" cy="16" r="9" fill="#fb7185" stroke="#3b2a7a" stroke-width="1.6"/>
+    <circle cx="6" cy="30" r="5.5" fill="#fff" stroke="#3b2a7a" stroke-width="1.6"/>
+    <circle cx="30" cy="30" r="5.5" fill="#fff" stroke="#3b2a7a" stroke-width="1.6"/>
+  </g>
+  <g fill="none" stroke="#3b2a7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="276" y="132" width="11" height="11" rx="2"/>
+    <path d="M278.5 137.5l3 3 6-8" stroke="#16a34a" stroke-width="2.4"/>
+    <path d="M296 138h44"/>
+    <rect x="276" y="154" width="11" height="11" rx="2"/>
+    <path d="M296 160h50"/>
+  </g>
+
+  <!-- spiral binding -->
+  <g fill="#2e1065">
+    <circle cx="231" cy="60" r="2.2"/><circle cx="249" cy="60" r="2.2"/>
+    <circle cx="231" cy="80" r="2.2"/><circle cx="249" cy="80" r="2.2"/>
+    <circle cx="231" cy="100" r="2.2"/><circle cx="249" cy="100" r="2.2"/>
+    <circle cx="231" cy="120" r="2.2"/><circle cx="249" cy="120" r="2.2"/>
+    <circle cx="231" cy="140" r="2.2"/><circle cx="249" cy="140" r="2.2"/>
+    <circle cx="231" cy="160" r="2.2"/><circle cx="249" cy="160" r="2.2"/>
+    <circle cx="231" cy="180" r="2.2"/><circle cx="249" cy="180" r="2.2"/>
+  </g>
+  <g fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round">
+    <path d="M231 60c0-11 18-11 18 0M231 80c0-11 18-11 18 0M231 100c0-11 18-11 18 0M231 120c0-11 18-11 18 0M231 140c0-11 18-11 18 0M231 160c0-11 18-11 18 0M231 180c0-11 18-11 18 0"/>
+  </g>
+
+  <!-- pencil -->
+  <g transform="rotate(-32 400 150)">
+    <rect x="352" y="141" width="92" height="16" rx="2" fill="#fbbf24"/>
+    <rect x="352" y="141" width="92" height="5" fill="#fde68a"/>
+    <rect x="444" y="141" width="12" height="16" fill="#94a3b8"/>
+    <rect x="456" y="141" width="14" height="16" rx="4" fill="#f9a8d4"/>
+    <path d="M352 141l-20 8 20 8z" fill="#f5d0a9"/>
+    <path d="M338 146.6l-6 2.4 6 2.4z" fill="#334155"/>
+  </g>
+
+  <!-- sticky note -->
+  <g transform="rotate(8 70 140)">
+    <rect x="40" y="110" width="58" height="56" rx="3" fill="#fde047"/>
+    <path d="M40 110h58v9H40z" fill="#facc15"/>
+    <path d="M50 134h38M50 146h28" stroke="#a16207" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+</svg>

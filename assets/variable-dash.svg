@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>A runner dashing up a graph</title>
+  <!-- graph axes: independent variable across, dependent variable up -->
+  <path d="M18 14v88h92" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 22l6-8 6 8M102 96l8 6-8 6" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- rising data line -->
+  <path d="M26 92 50 78l20 4 30-30" fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="92" r="4.5" fill="#2dd4bf"/>
+  <circle cx="50" cy="78" r="4.5" fill="#2dd4bf"/>
+  <circle cx="70" cy="82" r="4.5" fill="#2dd4bf"/>
+  <!-- runner on the line -->
+  <g transform="translate(-3 -7)">
+  <g stroke="#fbbf24" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M84 30 78 48"/>
+    <path d="M78 48l12 3 6 10"/>
+    <path d="M78 48l-9 8-9-2"/>
+    <path d="M82 35l10 6 8-5"/>
+    <path d="M82 35l-10-1-6 6"/>
+  </g>
+  <circle cx="88" cy="20" r="7" fill="#fbbf24"/>
+  <path d="M50 34h10M46 44h12M54 54h6" stroke="#fde68a" stroke-opacity="0.75" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- sparkle -->
+  <path d="M108 10l1.8 4.5 4.5 1.8-4.5 1.8-1.8 4.5-1.8-4.5-4.5-1.8 4.5-1.8z" fill="#fde68a"/>
+</svg>
