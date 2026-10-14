@@ -165,38 +165,6 @@ main,
   text-wrap: pretty;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 20px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.chips li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 14px 5px 11px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: rgba(8, 9, 11, 0.6);
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.chips li::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--teal);
-}
-
-.chips li:nth-child(2)::before { background: var(--amber); }
-.chips li:nth-child(3)::before { background: var(--violet); }
-
 /* ---------- Professor Mole ---------- */
 
 .mascot {
@@ -775,23 +743,6 @@ main,
     gap: 16px;
     padding-top: 18px;
     padding-bottom: 24px;
-  }
-
-  /* slimmer chips so all three fit on one line from 340px up */
-  .chips {
-    gap: 6px;
-    margin-top: 16px;
-  }
-
-  .chips li {
-    gap: 6px;
-    padding: 4px 11px 4px 9px;
-    font-size: 0.8125rem;
-  }
-
-  .chips li::before {
-    width: 7px;
-    height: 7px;
   }
 
   .mol {
