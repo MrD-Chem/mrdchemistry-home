@@ -1,21 +1,161 @@
 /*
-  mrdchemistry.com landing page ("Lively Lab") — layered on top of the shared site.css.
-  Colours come from the tokens in site.css. Every animation here moves only
-  transform/opacity, and all of it switches off for prefers-reduced-motion.
+  mrdchemistry.com landing page ("Liquid Glass lab") - layered on top of the shared site.css.
+
+  How the glass works (and why it stays fast on school Chromebooks):
+  - A static colour field (soft radial-gradient "blobs", drawn by main::before,
+    main::after and .site-footer::before) sits behind everything. It never moves.
+  - .glass  = a translucent tint + specular rim (::before) + inner glow (box-shadows).
+              No blur: over the soft colour field a blur would look the same and cost a lot.
+  - Real backdrop blur is used on ONE small surface at a time:
+      720px and up: the floating header bar, and only after the page has scrolled 40px
+      and content slides under it (a CSS scroll timeline shows a frost layer; no JavaScript).
+      Browsers without scroll timelines get a darker, unblurred bar.
+      Phones: the floating Games / Notes tab bar at the bottom of the screen.
+    Any blurred surface on screen is redrawn on every animation frame, so the cards,
+    speech bubble and "Coming soon" tag are tinted, not blurred.
+  - The Games / Notes cards are glass beakers: coloured liquid with a meniscus, measuring
+    marks and a few rising bubbles. The liquid sloshes once when the page opens.
+  - Motion: transform/opacity only. Molecules and bubbles drift in the side margins, never
+    behind a blurred surface; on phones the beakers hold still because the tab bar floats
+    over them. Where the browser can tell (Chrome 133+) the motion pauses once the page is
+    scrolled. Everything plays for about a minute after the page loads, then the lab settles
+    (no idle cost); pointing at Professor Mole or a beaker wakes it up again.
+    For endless motion, change the iteration counts to "infinite".
+  - Reduce motion: everything holds still. Reduce transparency, more contrast, or no
+    backdrop-filter support: every glass surface turns solid.
 */
 
 body.home {
+  --field: #070a13;
+  --ink: #f7f6f3;
+  --ink-2: #cdd2da;            /* secondary text on glass and on the field */
+  --tint: rgba(12, 16, 32, 0.5);
+  --tint-solid: #151b2d;       /* glass when transparency is off */
+  --blur: 14px;
+  --sat: 165%;
+  --frost: blur(var(--blur)) saturate(var(--sat)) brightness(0.85);
+  --lift: 0 22px 44px -20px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.22);
   position: relative;
+  background: var(--field);
 }
 
 .site-header,
 main,
 .site-footer {
   position: relative;
-  z-index: 1;
 }
 
-/* ---------- Floating molecules + bubbles (behind everything) ---------- */
+/* ---------- The colour field (static, behind everything) ---------- */
+
+main::before,
+main::after,
+.site-footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* hero + Games/Notes: measured from the top of <main> */
+main::before {
+  top: -110px;
+  bottom: 0;
+  background:
+    radial-gradient(460px 170px at 56% 70px, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0) 70%),
+    radial-gradient(500px 320px at 9% 150px, rgba(45, 212, 191, 0.3), rgba(45, 212, 191, 0) 70%),
+    radial-gradient(440px 260px at 32% 360px, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0) 70%),
+    radial-gradient(380px 330px at 80% 300px, rgba(139, 92, 246, 0.6), rgba(139, 92, 246, 0) 70%),
+    radial-gradient(300px 240px at 95% 470px, rgba(244, 114, 182, 0.42), rgba(244, 114, 182, 0) 70%),
+    radial-gradient(420px 220px at 47% 560px, rgba(59, 130, 246, 0.24), rgba(59, 130, 246, 0) 70%),
+    radial-gradient(560px 380px at 22% 880px, rgba(20, 184, 166, 0.5), rgba(20, 184, 166, 0) 70%),
+    radial-gradient(560px 380px at 80% 880px, rgba(168, 85, 247, 0.52), rgba(168, 85, 247, 0) 70%),
+    radial-gradient(320px 200px at 52% 1000px, rgba(251, 191, 36, 0.22), rgba(251, 191, 36, 0) 70%);
+}
+
+/* featured games: measured from the bottom of <main> */
+main::after {
+  bottom: -40px;
+  height: 640px;
+  background:
+    radial-gradient(520px 300px at 22% 62%, rgba(139, 92, 246, 0.42), rgba(139, 92, 246, 0) 70%),
+    radial-gradient(520px 300px at 78% 66%, rgba(245, 158, 11, 0.36), rgba(245, 158, 11, 0) 70%),
+    radial-gradient(380px 180px at 52% 62%, rgba(45, 212, 191, 0.2), rgba(45, 212, 191, 0) 70%);
+}
+
+.site-footer::before {
+  top: -80px;
+  bottom: 0;
+  background:
+    radial-gradient(420px 150px at 18% 56%, rgba(45, 212, 191, 0.26), rgba(45, 212, 191, 0) 70%),
+    radial-gradient(420px 150px at 84% 52%, rgba(168, 85, 247, 0.26), rgba(168, 85, 247, 0) 70%);
+}
+
+/* ---------- Glass recipe ---------- */
+
+.glass,
+.bar,
+.top-nav {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background-color: var(--tint);
+  /* soft light pooled in the top-left corner */
+  background-image: radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 55%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),           /* top lip */
+    inset 0 12px 20px -16px rgba(255, 255, 255, 0.42),   /* light bending in the thick top edge */
+    inset 0 -14px 22px -18px rgba(255, 255, 255, 0.2),   /* caustic glow along the bottom edge */
+    var(--lift);
+}
+
+/* specular rim: bright where the light catches the top-left and bottom-right edges */
+.glass::before,
+.bar::before,
+.top-nav::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.18) 16%,
+    rgba(255, 255, 255, 0.05) 38%,
+    rgba(255, 255, 255, 0.05) 62%,
+    rgba(255, 255, 255, 0.2) 84%,
+    rgba(255, 255, 255, 0.5));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+@supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .glass::before,
+  .bar::before,
+  .top-nav::before {
+    display: none;
+  }
+
+  .glass,
+  .bar,
+  .top-nav {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* phone tab bar: always frosted, page content scrolls under it */
+.top-nav {
+  -webkit-backdrop-filter: var(--frost);
+  backdrop-filter: var(--frost);
+}
+
+/* ---------- Floating molecules + bubbles (side margins only) ---------- */
 
 .lab-bg {
   position: absolute;
@@ -23,7 +163,7 @@ main,
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 0;
+  z-index: -1;
   overflow: hidden;
   pointer-events: none;
 }
@@ -44,28 +184,28 @@ main,
 }
 
 .mol {
-  opacity: 0.3;
-  animation: drift-a 18s ease-in-out infinite;
+  opacity: 0.32;
+  animation: drift-a 18s ease-in-out 3;
 }
 
-.mol-1 { top: 104px; left: 2%; width: 96px; animation-duration: 19s; animation-delay: -4s; }
-.mol-2 { top: 560px; right: 1.5%; width: 128px; animation-name: drift-b; animation-duration: 23s; animation-delay: -9s; }
-.mol-3 { top: 64px; right: 3%; width: 76px; animation-name: drift-c; animation-duration: 21s; }
+.mol-1 { top: 112px; left: 2%; width: 96px; animation-duration: 19s; animation-delay: -4s; }
+.mol-2 { top: 560px; right: 1.5%; width: 120px; animation-name: drift-b; animation-duration: 23s; animation-delay: -9s; }
+.mol-3 { top: 96px; right: 3%; width: 76px; animation-name: drift-c; animation-duration: 21s; }
 .mol-4 { top: 880px; left: 1.5%; width: 86px; animation-name: drift-b; animation-duration: 17s; animation-delay: -6s; }
-.mol-5 { bottom: 300px; right: 2.5%; width: 84px; animation-duration: 25s; animation-delay: -12s; }
-.mol-6 { bottom: 96px; left: 5%; width: 64px; animation-name: drift-c; animation-duration: 20s; animation-delay: -3s; }
+.mol-5 { bottom: 320px; right: 2.5%; width: 84px; animation-duration: 25s; animation-delay: -12s; }
+.mol-6 { bottom: 60px; left: 3%; width: 64px; animation-name: drift-c; animation-duration: 20s; animation-delay: -3s; }
 
 .fizz {
   width: 22px;
   opacity: 0.5;
-  animation: rise 12s linear infinite;
+  animation: rise 12s linear 4;
 }
 
-.fizz-1 { top: 560px; left: 7%; animation-delay: -2s; }
+.fizz-1 { top: 560px; left: 6%; animation-delay: -2s; }
 .fizz-2 { top: 640px; left: 3%; width: 14px; animation-duration: 10s; animation-delay: -7s; }
-.fizz-3 { top: 600px; right: 8%; width: 18px; animation-duration: 14s; animation-delay: -5s; }
+.fizz-3 { top: 600px; right: 7%; width: 18px; animation-duration: 14s; animation-delay: -5s; }
 .fizz-4 { top: 700px; right: 3.5%; width: 12px; animation-duration: 9s; animation-delay: -1s; }
-.fizz-5 { top: 430px; right: 24%; width: 16px; animation-name: rise-short; animation-duration: 9s; animation-delay: -4s; }
+.fizz-5 { display: none; }
 
 @keyframes drift-a {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -74,7 +214,7 @@ main,
 
 @keyframes drift-b {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-18px, 16px) rotate(-12deg); }
+  50% { transform: translate(-16px, 16px) rotate(-12deg); }
 }
 
 @keyframes drift-c {
@@ -91,77 +231,178 @@ main,
   100% { transform: translate(-4px, -420px) scale(1.1); opacity: 0; }
 }
 
-/* fizz from Professor Mole's bench: stops behind his speech bubble */
+/* fizz from Professor Mole's test tubes: fades out well below his speech bubble */
 @keyframes rise-short {
   0% { transform: translate(0, 0) scale(0.7); opacity: 0; }
-  15% { opacity: 0.75; }
-  50% { transform: translate(-8px, -140px) scale(0.9); }
-  80% { opacity: 0.5; }
-  100% { transform: translate(4px, -280px) scale(1.05); opacity: 0; }
+  20% { opacity: 0.8; }
+  60% { transform: translate(-6px, -60px) scale(0.9); opacity: 0.6; }
+  100% { transform: translate(3px, -110px) scale(1.05); opacity: 0; }
 }
 
-/* ---------- Header ---------- */
+/* ---------- Header: brand capsule (phones) / floating glass bar (720px+) ---------- */
 
-.top-nav {
+.site-header {
+  z-index: 20;
+  padding: 14px 0 0;
+  pointer-events: none; /* the see-through strip around the bar never blocks taps */
+}
+
+.bar {
   display: flex;
+  align-items: center;
+  width: -webkit-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 18px 6px 6px;
+  border-radius: 999px;
+  pointer-events: auto;
+}
+
+.brand {
+  gap: 10px;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22), 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* phones: Games / Notes float in a glass tab bar at the bottom of the screen */
+.top-nav {
+  position: fixed;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 4px;
+  width: min(320px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 5px;
+  border-radius: 999px;
+  pointer-events: auto;
+  --tint: rgba(12, 16, 32, 0.62);
 }
 
 .top-nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 16px;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 18px;
   border-radius: 999px;
-  color: var(--muted);
-  font-weight: 600;
+  color: var(--ink);
+  font-weight: 700;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease;
 }
 
-.top-nav a:hover {
-  color: var(--text);
-  background: var(--glass-strong);
+.top-nav a::before,
+.footer-nav a::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.8);
+}
+
+.top-nav .nav-notes::before,
+.footer-nav .nav-notes::before {
+  background: var(--violet);
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);
+}
+
+.top-nav a:hover,
+.top-nav a:active {
+  background-color: rgba(255, 255, 255, 0.13);
+  color: #fff;
 }
 
 /* ---------- Hero ---------- */
 
 .hero {
   display: grid;
-  gap: 20px;
-  padding: 28px 0 32px;
+  gap: 18px;
+  padding-top: 26px;
+  padding-bottom: 28px;
+}
+
+.eyebrow.glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 999px;
+  color: #fcd34d;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 8px 20px -10px rgba(0, 0, 0, 0.7);
+}
+
+.eyebrow.glass::after {
+  content: "";
+  order: -1;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.9);
 }
 
 .hero h2 {
   margin: 0 0 14px;
-  font-size: clamp(2.3rem, 1.5rem + 3.4vw, 3.9rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-family: var(--sans);
+  font-size: clamp(2.45rem, 1.45rem + 3.9vw, 4.15rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  text-shadow: 0 2px 18px rgba(7, 10, 19, 0.55);
 }
 
 .fun {
   color: var(--teal);
-  text-decoration: underline wavy rgba(45, 212, 191, 0.55);
+  text-decoration: underline wavy rgba(45, 212, 191, 0.6);
   text-decoration-thickness: 3px;
-  text-underline-offset: 0.16em;
+  text-underline-offset: 0.14em;
+  text-decoration-skip-ink: none;
 }
 
 .easy {
   color: var(--amber);
 }
 
+/* liquid-coloured words where the browser can clip a gradient to text */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .fun,
+  .easy {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none; /* a shadow would show through the see-through letters and dull them */
+  }
+
+  .fun {
+    background-image: linear-gradient(100deg, #a7f3e4, #2dd4bf 45%, #22d3ee);
+  }
+
+  .easy {
+    background-image: linear-gradient(100deg, #fde68a, #fbbf24 50%, #fb923c);
+  }
+}
+
 .hero .lead {
-  max-width: 34rem;
-  text-wrap: pretty;
-}
-
-.hero h2,
-.door-title,
-.feature-title {
-  text-wrap: balance;
-}
-
-.door-blurb,
-.feature-blurb {
+  max-width: 33rem;
+  color: var(--ink-2);
   text-wrap: pretty;
 }
 
@@ -172,7 +413,7 @@ main,
   grid-template-columns: 148px minmax(0, 1fr);
   grid-template-areas: "stage say";
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   margin: 4px 0 0;
 }
 
@@ -183,7 +424,7 @@ main,
   height: 148px;
 }
 
-/* soft glowing "porthole" behind him */
+/* a glass bubble behind him: colour from the field, a highlight, a lit rim */
 .mascot-stage::before {
   content: "";
   position: absolute;
@@ -193,8 +434,32 @@ main,
   height: 132px;
   margin-left: -66px;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 45%, rgba(45, 212, 191, 0.28), rgba(45, 212, 191, 0.06) 62%, transparent 72%);
-  box-shadow: inset 0 0 0 1px rgba(45, 212, 191, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background:
+    radial-gradient(38% 26% at 34% 22%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 100%),
+    radial-gradient(circle at 50% 62%, rgba(45, 212, 191, 0.34), rgba(45, 212, 191, 0.06) 62%, rgba(255, 255, 255, 0.07) 74%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow:
+    inset 0 -14px 26px -10px rgba(45, 212, 191, 0.45),
+    inset 0 10px 18px -12px rgba(255, 255, 255, 0.6),
+    0 24px 50px -22px rgba(139, 92, 246, 0.9);
+}
+
+/* a curved streak of light on the front of the orb, drawn over Professor Mole (under the bench) */
+.mascot-stage::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 18px;
+  width: 132px;
+  height: 132px;
+  margin-left: -66px;
+  border: 3px solid transparent;
+  border-top-color: rgba(255, 255, 255, 0.42);
+  border-left-color: rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  transform: rotate(-24deg) scale(0.86);
+  pointer-events: none;
 }
 
 .mole {
@@ -206,7 +471,7 @@ main,
   height: auto;
   margin-left: -60px;
   transform-origin: 50% 100%;
-  animation: mole-bob 4.6s ease-in-out infinite;
+  animation: mole-bob 4.6s ease-in-out 12;
 }
 
 /* he stands behind the bench, so the bottom of his coat is hidden */
@@ -217,37 +482,45 @@ main,
   bottom: 0;
   width: 100%;
   height: auto;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.45));
 }
 
+/* light glass: dark text on a bright, nearly opaque surface (tinted, not blurred) */
 .say {
   grid-area: say;
   position: relative;
   padding: 12px 16px;
-  border-radius: 18px;
-  background: #f7f6f3;
-  color: #16181d;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 22px;
+  background-color: rgba(247, 248, 252, 0.86);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 55%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -12px 18px -14px rgba(139, 92, 246, 0.5),
+    0 18px 40px -14px rgba(0, 0, 0, 0.7);
+  color: #12151c;
   font-size: 0.975rem;
   line-height: 1.45;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
   text-wrap: pretty;
   animation: say-pop 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
 }
 
 .say strong {
-  color: #0f766e;
+  color: #035a53;
 }
 
 /* the speech-bubble tail (points left at Professor Mole on phones) */
 .say::after {
   content: "";
   position: absolute;
-  left: -7px;
-  top: 38%;
-  width: 16px;
-  height: 16px;
-  background: #f7f6f3;
-  border-radius: 3px;
-  transform: rotate(45deg);
+  left: -11px;
+  top: 50%;
+  width: 12px;
+  height: 22px;
+  margin-top: -11px;
+  background: rgba(247, 248, 252, 0.86);
+  -webkit-clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
 @keyframes mole-bob {
@@ -266,8 +539,8 @@ main,
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 20px;
-  margin: 8px 0 0;
-  padding: 0;
+  margin-top: 8px;
+  margin-bottom: 0;
   list-style: none;
 }
 
@@ -277,51 +550,155 @@ main,
 
 .door {
   --accent: var(--teal);
-  --accent-glow: rgba(45, 212, 191, 0.28);
-  position: relative;
+  --accent-soft: rgba(45, 212, 191, 0.14);
+  --accent-glow: rgba(45, 212, 191, 0.55);
+  --liq-top: rgba(45, 212, 191, 0.46);
+  --liq-bot: rgba(13, 110, 102, 0.86);
+  --liq-glow: rgba(45, 212, 191, 0.4);
+  --cta-bot: #dff7f2;
+  --cta-ink: #053f39;
+  --liquid-h: 90px;
+  isolation: isolate; /* keeps the beaker liquid inside the card, above its glass tint */
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)), var(--bg-raised);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.35);
-  color: var(--text);
+  padding: 8px;
+  border-radius: 30px;
+  color: var(--ink);
   text-decoration: none;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
+}
+
+.door.glass {
+  background-image:
+    radial-gradient(90% 55% at 50% 108%, var(--accent-soft), rgba(0, 0, 0, 0) 100%),
+    radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 55%);
 }
 
 .door--notes {
   --accent: var(--violet);
-  --accent-glow: rgba(167, 139, 250, 0.28);
+  --accent-soft: rgba(167, 139, 250, 0.16);
+  --accent-glow: rgba(167, 139, 250, 0.6);
+  --liq-top: rgba(167, 139, 250, 0.44);
+  --liq-bot: rgba(76, 29, 149, 0.88);
+  --liq-glow: rgba(167, 139, 250, 0.4);
+  --cta-bot: #ece6ff;
+  --cta-ink: #2e1065;
+}
+
+/* the inside of the beaker: clips the liquid to the glass */
+.beaker {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* light caught in the thick glass wall */
+.beaker::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: 3px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.28) 18%, rgba(255, 255, 255, 0.04) 55%, rgba(255, 255, 255, 0.24) 86%, rgba(255, 255, 255, 0));
+}
+
+.beaker-liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -24px;
+  height: calc(var(--liquid-h) + 24px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 16px),
+    radial-gradient(40% 46% at 72% 34%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 70%),
+    radial-gradient(70% 60% at 20% 110%, var(--liq-glow), rgba(0, 0, 0, 0) 70%),
+    linear-gradient(180deg, var(--liq-top), var(--liq-bot) 80%);
+  box-shadow: 0 -10px 30px -6px var(--liq-glow);
+  /* sloshes once when the page opens, then settles flat */
+  animation: settle 3s cubic-bezier(0.33, 0.6, 0.3, 1) 0.3s both;
+}
+
+.meniscus {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  display: block;
+  width: 100%;
+  height: 12px;
+  color: var(--liq-top);
+  overflow: visible;
+}
+
+.bub {
+  position: absolute;
+  bottom: 30px;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.85) 0 20%, rgba(255, 255, 255, 0.08) 45%);
+  opacity: 0.8;
+  animation: bub-rise 6s ease-in 7; /* about 45-60 s, then they rest */
+}
+
+.bub-1 { left: 63%; animation-delay: -1s; }
+.bub-2 { left: 72%; bottom: 52px; width: 7px; height: 7px; animation-duration: 7.5s; animation-delay: -4s; }
+.bub-3 { left: 80%; bottom: 40px; width: 14px; height: 14px; animation-duration: 9s; animation-delay: -6.5s; }
+
+@keyframes settle {
+  0% { transform: translateY(10px) skewY(-3deg); }
+  20% { transform: translateY(2px) skewY(2.4deg); }
+  40% { transform: skewY(-1.4deg); }
+  60% { transform: skewY(0.7deg); }
+  80% { transform: skewY(-0.25deg); }
+  100% { transform: none; }
+}
+
+@keyframes bub-rise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  15% { opacity: 0.85; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(-62px) scale(1); opacity: 0; }
 }
 
 /* accent ring + glow, faded in on hover (opacity only) */
-.door::after {
+.door::after,
+.feature::after {
   content: "";
   position: absolute;
   top: -1px;
   right: -1px;
   bottom: -1px;
   left: -1px;
-  border-radius: 20px;
-  box-shadow: inset 0 0 0 2px var(--accent), 0 22px 50px -12px var(--accent-glow);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--accent), 0 24px 54px -16px var(--accent-glow);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.25s ease;
   pointer-events: none;
 }
 
 .door:hover {
-  color: var(--text);
+  color: var(--ink);
 }
 
+/* the art sits in the glass like a picture behind a lens: concentric corners */
 .door-cover {
   position: relative;
   display: block;
   overflow: hidden;
-  border-radius: 19px 19px 0 0;
+  border-radius: 22px;
   aspect-ratio: 480 / 200;
   background: #0b1416;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 10px 22px -12px rgba(0, 0, 0, 0.7);
 }
 
 .door--notes .door-cover {
@@ -337,16 +714,18 @@ main,
 
 .door-tag {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px 5px 10px;
-  border: 1px solid rgba(167, 139, 250, 0.6);
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 12px 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
-  background: rgba(13, 10, 26, 0.85);
-  color: #ddd6fe;
+  background-color: rgba(16, 11, 34, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+  color: #f1edff;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -359,42 +738,79 @@ main,
   height: 7px;
   border-radius: 50%;
   background: var(--amber);
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.9);
 }
 
 .door-body {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
   gap: 6px;
-  padding: 18px 22px 22px;
-  border-top: 1px solid var(--line);
+  padding: 16px 40px 12px 14px;
+}
+
+/* measuring marks printed on the glass, in front of the liquid */
+.door-body::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  right: 6px;
+  bottom: 6px;
+  width: 16px;
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0 2px, transparent 2px 15px) 100% 0 / 8px 100% no-repeat,
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0 2px, transparent 2px 60px) 100% 0 / 16px 100% no-repeat;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .door-title {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.15;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .door-blurb {
-  margin-bottom: 12px;
-  color: var(--muted);
+  margin-bottom: 40px; /* the button floats in the liquid; the words stay above it */
+  color: var(--ink-2);
   line-height: 1.5;
+  text-wrap: pretty;
 }
 
+/* a light glass capsule floating in the liquid */
 .door-cta {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  gap: 8px;
-  min-height: 44px;
+  gap: 12px;
+  min-height: 48px;
   margin-top: auto;
-  padding: 0 22px;
+  padding: 0 8px 0 22px;
   border-radius: 999px;
+  background-color: var(--cta-bot);
+  background-image: linear-gradient(180deg, #fff, var(--cta-bot));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -3px 8px -2px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.45),
+    0 10px 20px -10px rgba(0, 0, 0, 0.8);
+  color: var(--cta-ink);
+  font-weight: 800;
+}
+
+.door-cta .arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   background: var(--accent);
-  color: var(--on-accent);
-  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: #06080a;
 }
 
 .arrow {
@@ -403,7 +819,10 @@ main,
 }
 
 .door:focus-visible,
-.feature:focus-visible {
+.feature:focus-visible,
+.see-all:focus-visible,
+.top-nav a:focus-visible,
+.footer-nav a:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 4px;
 }
@@ -417,28 +836,35 @@ main,
 .featured-head {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: 4px 16px;
-  margin-bottom: 12px;
+  gap: 8px 16px;
+  margin-bottom: 14px;
 }
 
 .featured-head h2 {
   margin: 0;
+  font-family: var(--sans);
   font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
 }
 
-.see-all {
+.see-all.glass {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  color: #99f6e4;
   font-weight: 700;
   text-decoration: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 8px 20px -10px rgba(0, 0, 0, 0.7);
 }
 
 .see-all:hover {
-  text-decoration: underline;
+  color: #ccfbf1;
 }
 
 .feature-list {
@@ -455,64 +881,74 @@ main,
 }
 
 .feature {
-  --accent: var(--teal);
-  --accent-soft: var(--teal-soft);
-  position: relative;
+  --accent: var(--violet);
+  --accent-ink: #c4b5fd;
+  --accent-hi: #ddd6fe;
+  --accent-soft: rgba(167, 139, 250, 0.3);
+  --accent-glow: rgba(167, 139, 250, 0.55);
+  --vial-top: rgba(167, 139, 250, 0.5);
+  --vial-bot: rgba(76, 29, 149, 0.88);
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr);
   align-items: start; /* side-by-side cards: tags and titles line up */
   gap: 14px;
   width: 100%;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)), var(--bg-raised);
-  color: var(--text);
+  padding: 12px;
+  border-radius: 26px;
+  color: var(--ink);
   text-decoration: none;
-  transition: transform 0.2s ease;
-}
-
-.feature--violet {
-  --accent: var(--violet);
-  --accent-soft: var(--violet-soft);
+  transition: transform 0.25s ease;
 }
 
 .feature--amber {
   --accent: var(--amber);
-  --accent-soft: var(--amber-soft);
-}
-
-.feature::after {
-  content: "";
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  bottom: -1px;
-  left: -1px;
-  border-radius: 18px;
-  box-shadow: inset 0 0 0 2px var(--accent);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: none;
+  --accent-ink: #fcd34d;
+  --accent-hi: #fde68a;
+  --accent-soft: rgba(251, 191, 36, 0.28);
+  --accent-glow: rgba(251, 191, 36, 0.5);
+  --vial-top: rgba(251, 191, 36, 0.42);
+  --vial-bot: rgba(146, 64, 14, 0.85);
 }
 
 .feature:hover {
-  color: var(--text);
+  color: var(--ink);
 }
 
+/* app-icon style tile: a smaller lens nested in the card */
 .feature-art {
   display: grid;
   place-items: center;
-  width: 72px;
-  height: 72px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: radial-gradient(circle at 50% 45%, var(--accent-soft), rgba(255, 255, 255, 0.02) 75%);
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  background:
+    radial-gradient(70% 45% at 35% 18%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 100%),
+    radial-gradient(circle at 50% 60%, var(--accent-soft), rgba(255, 255, 255, 0.03) 78%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), inset 0 -10px 16px -12px var(--accent), 0 8px 18px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* coloured liquid in the bottom of the tile, with a bright meniscus line */
+.feature-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-art::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36%;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(180deg, var(--vial-top), var(--vial-bot));
 }
 
 .feature-art img {
+  position: relative;
   display: block;
-  width: 58px;
+  width: 50px;
   height: auto;
 }
 
@@ -524,7 +960,7 @@ main,
 }
 
 .feature-tag {
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -532,16 +968,19 @@ main,
 }
 
 .feature-title {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 .feature-blurb {
-  color: var(--muted);
+  color: var(--ink-2);
   font-size: 0.9375rem;
   line-height: 1.45;
+  text-wrap: pretty;
 }
 
 .feature-go {
@@ -552,27 +991,28 @@ main,
 /* ---------- Footer ---------- */
 
 .site-footer {
-  margin-top: 72px;
-  padding: 0;
-  border-top: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(45, 212, 191, 0.05), transparent 70%), rgba(255, 255, 255, 0.015);
+  margin-top: 64px;
+  padding: 0 0 24px;
+  border-top: 0;
+  background: none;
+  color: var(--ink-2);
 }
 
-.footer-inner {
+.footer-inner.glass {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px 24px;
-  padding-top: 24px;
-  padding-bottom: 28px;
+  padding: 18px 20px 20px;
+  border-radius: 28px;
 }
 
 .footer-brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--text);
+  color: var(--ink);
   font-size: 1rem;
   line-height: 1.35;
 }
@@ -580,7 +1020,7 @@ main,
 .footer-brand .brand-mark {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 999px;
 }
 
 .footer-brand strong {
@@ -589,7 +1029,7 @@ main,
 }
 
 .footer-tagline {
-  color: var(--muted);
+  color: var(--ink-2);
   font-size: 0.875rem;
 }
 
@@ -601,25 +1041,29 @@ main,
 .footer-nav a {
   display: inline-flex;
   align-items: center;
+  gap: 9px;
   min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid var(--line-strong);
+  padding: 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
-  color: var(--text);
+  background-color: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  color: var(--ink);
   font-weight: 600;
   text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
 .footer-nav a:hover {
-  background: var(--glass-strong);
-  color: var(--text);
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
 }
 
 .footer-legal {
   flex-basis: 100%;
-  padding-top: 16px;
-  border-top: 1px dashed var(--line);
-  color: var(--muted);
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--ink-2);
   font-size: 0.875rem;
 }
 
@@ -648,7 +1092,7 @@ main,
   text-align: center;
 }
 
-/* ---------- Hover lift: only on devices that really hover ---------- */
+/* ---------- Hover: only on devices that really hover ---------- */
 
 @media (hover: hover) and (pointer: fine) {
   .door:hover,
@@ -669,98 +1113,65 @@ main,
   .feature:hover .arrow {
     transform: translateX(4px);
   }
+
+  .see-all.glass:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* wake the settled lab back up while the pointer is on it */
+  .mascot:hover .mole,
+  .door:hover .bub {
+    animation-iteration-count: infinite;
+  }
 }
 
 /* ---------- Layout by screen size ---------- */
 
-/* tablets and small laptops: the side margins are thin, so the molecules
-   peek in from the edges instead of sitting behind the words */
-@media (min-width: 720px) and (max-width: 1279px) {
+/* phones: room for the floating tab bar under the footer */
+@media (max-width: 719px) {
+  /* a link reached with Tab is scrolled fully into view, clear of the tab bar,
+     so its focus ring is never cut off or hidden under the bar */
+  html {
+    scroll-padding: 16px 0 86px;
+  }
+
+  body.home {
+    padding-bottom: 76px;
+  }
+
+  /* top layer: hero + Games/Notes only; it ends where <main> ends, so nothing reaches its bottom edge */
+  main::before {
+    background:
+      radial-gradient(260px 260px at 0% 150px, rgba(45, 212, 191, 0.28), rgba(45, 212, 191, 0) 70%),
+      radial-gradient(240px 220px at 18% 560px, rgba(139, 92, 246, 0.6), rgba(139, 92, 246, 0) 70%),
+      radial-gradient(240px 220px at 100% 640px, rgba(244, 114, 182, 0.36), rgba(244, 114, 182, 0) 70%),
+      radial-gradient(320px 300px at 12% 900px, rgba(20, 184, 166, 0.5), rgba(20, 184, 166, 0) 70%),
+      radial-gradient(300px 220px at 100% 1060px, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0) 70%);
+  }
+
+  /* bottom layer: Notes card + featured games, measured up from the end of <main> */
+  main::after {
+    height: 700px;
+    background:
+      radial-gradient(320px 300px at 88% 32%, rgba(168, 85, 247, 0.5), rgba(168, 85, 247, 0) 70%),
+      radial-gradient(300px 220px at 0% 56%, rgba(139, 92, 246, 0.42), rgba(139, 92, 246, 0) 70%),
+      radial-gradient(300px 220px at 100% 74%, rgba(245, 158, 11, 0.34), rgba(245, 158, 11, 0) 70%);
+  }
+
   .mol {
     opacity: 0.22;
   }
 
-  /* water floats in the open strip between the logo and the nav */
-  .mol-1 { top: 10px; left: 46%; width: 76px; }
-  .mol-2 { right: -54px; }
-  .mol-3 { top: 128px; right: -34px; width: 72px; }
-  .mol-4 { left: -36px; }
-  .mol-5 { right: -34px; }
-  .mol-6 { left: -22px; }
+  /* water sits beside "fun and easy" */
+  .mol-1 { top: 200px; left: auto; right: -22px; width: 66px; }
+  .mol-6 { bottom: 150px; left: auto; right: -16px; width: 58px; }
 
-  .fizz-1 { left: 5px; width: 16px; }
-  .fizz-2 { left: 3px; width: 12px; }
-  .fizz-3 { right: 5px; width: 16px; }
-  .fizz-4 { right: 3px; width: 12px; }
-}
-
-@media (max-width: 899px) {
-  .fizz-5 {
-    display: none;
-  }
-}
-
-/* 900-1279px: the Games/Notes cards fill the width right where CO2 would sit */
-@media (min-width: 900px) and (max-width: 1279px) {
-  .mol-2 {
-    display: none;
-  }
-}
-
-/* phones: keep only a few molecules, tucked into the corners */
-@media (max-width: 719px) {
-  /* Games and Notes stay on the first screen as two outlined pills
-     (beside the logo, or under it on narrow phones) */
-  .top-nav {
-    gap: 8px;
-  }
-
-  .top-nav a {
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid var(--line-strong);
-    background: rgba(8, 9, 11, 0.6);
-    color: var(--text);
-  }
-
-  .top-nav a::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--teal);
-  }
-
-  .top-nav a + a::before {
-    background: var(--violet);
-  }
-
-  .site-header-inner {
-    gap: 14px 20px;
-  }
-
-  .hero {
-    gap: 16px;
-    padding-top: 18px;
-    padding-bottom: 24px;
-  }
-
-  .mol {
-    opacity: 0.2;
-  }
-
-  /* water sits beside "fun and easy", clear of the nav pills */
-  .mol-1 { top: 196px; left: auto; right: -20px; width: 68px; }
-  .mol-6 { bottom: 150px; left: auto; right: -14px; width: 60px; }
-
-  /* the 16px gutters leave no clear spot for these: they would only show
-     as a grey edge behind the cards */
+  /* the 16px gutters leave no clear spot for these */
   .mol-2,
   .mol-3,
   .mol-4,
   .mol-5,
-  .fizz-3,
-  .fizz-5 {
+  .fizz-3 {
     display: none;
   }
 
@@ -771,15 +1182,15 @@ main,
   .feature-tag {
     letter-spacing: 0.02em;
   }
+
+  /* the frosted tab bar floats over the cards here: nothing may move behind it */
+  .bub,
+  .beaker-liquid {
+    animation: none;
+  }
 }
 
 @media (max-width: 559px) {
-  .top-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-  }
-
   .feature {
     grid-template-columns: 60px minmax(0, 1fr);
     gap: 12px;
@@ -788,23 +1199,18 @@ main,
   .feature-art {
     width: 60px;
     height: 60px;
-    border-radius: 14px;
+    border-radius: 17px;
   }
 
   .feature-art img {
-    width: 48px;
+    width: 46px;
   }
-}
-
-/* large phones: the nav fits beside the logo, so the headline sits higher */
-@media (min-width: 560px) and (max-width: 719px) {
-  .mol-1 { top: 128px; }
 }
 
 @media (min-width: 560px) {
   .mascot {
     grid-template-columns: 200px minmax(0, 1fr);
-    gap: 18px;
+    gap: 20px;
   }
 
   .mascot-stage {
@@ -812,7 +1218,8 @@ main,
     height: 196px;
   }
 
-  .mascot-stage::before {
+  .mascot-stage::before,
+  .mascot-stage::after {
     bottom: 26px;
     width: 176px;
     height: 176px;
@@ -831,31 +1238,169 @@ main,
   }
 
   .feature {
-    grid-template-columns: 88px minmax(0, 1fr) auto;
+    grid-template-columns: 84px minmax(0, 1fr) auto;
     gap: 16px;
-    padding: 14px 18px 14px 14px;
+    padding: 12px 16px 12px 12px;
   }
 
   .feature-art {
-    width: 88px;
-    height: 88px;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
   }
 
   .feature-art img {
-    width: 70px;
+    width: 66px;
   }
 
+  /* a small round lens with the accent arrow */
   .feature-go {
     display: inline-grid;
     place-items: center;
     width: 44px;
     height: 44px;
-    border: 1px solid var(--accent);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    color: var(--accent);
+    background:
+      radial-gradient(56% 30% at 42% 12%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 100%),
+      rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -4px 5px -4px var(--accent), 0 6px 14px -8px rgba(0, 0, 0, 0.7);
+    color: var(--accent-hi);
     font-size: 1.125rem;
     font-weight: 700;
   }
+}
+
+/* tablets and up: the brand and Games / Notes share one floating glass bar */
+@media (min-width: 720px) {
+  /* a card reached with Tab (or Shift+Tab) is scrolled fully into view, clear of
+     the sticky bar, so its focus ring is never cut off or hidden under the bar */
+  html {
+    scroll-padding: 86px 0 16px;
+  }
+
+  .site-header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    padding-top: 12px;
+  }
+
+  /* no frost: dark enough for anything that scrolls under it */
+  .bar {
+    justify-content: space-between;
+    gap: 16px;
+    width: auto;
+    padding: 6px 6px 6px 8px;
+    --tint: rgba(10, 14, 28, 0.86);
+  }
+
+  /* The frost is its own layer under the bar's tint. It stays hidden (visibility: hidden,
+     so it is never drawn) until a scroll timeline shows it after 40px of scrolling, when
+     content really slides under the bar. At the top of the page the bar floats over the
+     smooth colour field, where a blur would be invisible, so it costs nothing there. */
+  .bar::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    visibility: hidden;
+    -webkit-backdrop-filter: var(--frost);
+    backdrop-filter: var(--frost);
+    pointer-events: none;
+  }
+
+  @supports ((animation-timeline: scroll()) and ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)))) {
+    .bar {
+      --tint: rgba(12, 16, 32, 0.66);
+    }
+
+    .bar::after {
+      animation: bar-frost steps(1, end) both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 40px;
+    }
+  }
+
+  .brand {
+    font-size: 1.375rem;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* the nav is just two capsules inside the bar now, not a glass bar of its own */
+  .top-nav {
+    position: static;
+    display: flex;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .top-nav::before {
+    display: none;
+  }
+
+  /* Games / Notes: small glass capsules inside the bar */
+  .top-nav {
+    gap: 8px;
+  }
+
+  .top-nav a {
+    min-height: 44px;
+    padding: 0 18px 0 16px;
+    background-color: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .top-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .hero {
+    padding-top: 36px;
+  }
+
+  .mol {
+    opacity: 0.24;
+  }
+
+  .doors {
+    gap: 24px;
+  }
+}
+
+@keyframes bar-frost {
+  from { visibility: hidden; }
+  to { visibility: visible; }
+}
+
+/* tablets and small laptops: the side margins are thin, so the molecules
+   peek in from the edges instead of sitting behind the words */
+@media (min-width: 720px) and (max-width: 1279px) {
+  .mol-1 { top: 150px; left: -40px; width: 76px; }
+  .mol-2 { right: -60px; }
+  .mol-3 { top: 128px; right: -34px; width: 72px; }
+  .mol-4 { left: -40px; }
+  .mol-5 { right: -36px; }
+  .mol-6 { left: -26px; }
+
+  .fizz-1 { left: 3px; width: 14px; }
+  .fizz-2 { left: 2px; width: 11px; }
+  .fizz-3 { right: 3px; width: 14px; }
+  .fizz-4 { right: 2px; width: 11px; }
 }
 
 /* laptops and up: text left, Professor Mole right */
@@ -864,7 +1409,12 @@ main,
     grid-template-columns: minmax(0, 1fr) 380px;
     align-items: center;
     gap: 32px;
-    padding: 20px 0 36px;
+    padding-top: 28px;
+    padding-bottom: 40px;
+  }
+
+  .hero .lead {
+    font-size: 1.1875rem;
   }
 
   .mascot {
@@ -873,7 +1423,7 @@ main,
       "say"
       "stage";
     justify-items: center;
-    gap: 6px;
+    gap: 14px;
     margin: 0;
   }
 
@@ -882,11 +1432,12 @@ main,
     height: 244px;
   }
 
-  .mascot-stage::before {
+  .mascot-stage::before,
+  .mascot-stage::after {
     bottom: 22px;
-    width: 228px;
-    height: 228px;
-    margin-left: -114px;
+    width: 230px;
+    height: 230px;
+    margin-left: -115px;
   }
 
   .mole {
@@ -905,21 +1456,122 @@ main,
   /* tail points down at his goggles */
   .say::after {
     left: auto;
-    right: 64px;
+    right: 58px;
     top: auto;
-    bottom: -7px;
+    bottom: -12px;
+    width: 22px;
+    height: 12px;
+    margin-top: 0;
+    -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
 
-  .doors {
-    gap: 24px;
+  .door {
+    padding: 10px;
+    border-radius: 32px;
   }
 
   .door-body {
-    padding: 20px 26px 26px;
+    padding: 18px 44px 14px 16px;
   }
 
   .door-title {
     font-size: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .fizz-5 {
+    display: block;
+    top: 372px;
+    right: calc(50% - 442px);
+    width: 14px;
+    animation-name: rise-short;
+    animation-duration: 7s;
+    animation-iteration-count: 7;
+    animation-delay: -3s;
+  }
+}
+
+/* ---------- Never blur and animate at the same time (Chrome 133+) ----------
+   Once the page is scrolled, cards slide under the frosted bar / tab bar, so the
+   ambient motion pauses; it picks up again back at the top. Other browsers simply
+   keep it running (for about a minute, see the iteration counts above). */
+
+@supports (container-type: scroll-state) {
+  html {
+    container-type: scroll-state;
+  }
+
+  @container scroll-state(scrollable: top) {
+    .mol,
+    .fizz,
+    .mole,
+    .bub {
+      animation-play-state: paused;
+    }
+  }
+}
+
+/* ---------- Solid surfaces: no backdrop-filter, reduce transparency, more contrast ---------- */
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass,
+  .bar,
+  .top-nav {
+    background-color: var(--tint-solid);
+  }
+
+  .top-nav a {
+    color: var(--ink);
+  }
+
+  .say,
+  .say::after {
+    background-color: #f7f6f3;
+  }
+
+  .door-tag {
+    background-color: #1b1433;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass,
+  .bar,
+  .top-nav {
+    background-color: var(--tint-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .bar::after {
+    display: none;
+  }
+
+  .say,
+  .say::after {
+    background-color: #f7f6f3;
+  }
+
+  .door-tag {
+    background-color: #1b1433;
+  }
+}
+
+@media (min-width: 720px) and (prefers-reduced-transparency: reduce), (min-width: 720px) and (prefers-contrast: more) {
+  .top-nav {
+    background: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .glass,
+  .bar,
+  .top-nav,
+  .say,
+  .door-tag {
+    border: 1px solid CanvasText;
   }
 }
 
@@ -929,7 +1581,15 @@ main,
   .mol,
   .fizz,
   .mole,
-  .say {
+  .say,
+  .bub,
+  .beaker-liquid {
+    animation: none !important;
+  }
+
+  /* nothing moves now, so a bar that is always frosted costs nothing at rest */
+  .bar::after {
+    visibility: visible;
     animation: none !important;
   }
 
@@ -938,8 +1598,16 @@ main,
   .door-cover img,
   .arrow,
   .door::after,
-  .feature::after {
+  .feature::after,
+  .glass::before,
+  .top-nav a,
+  .footer-nav a {
     transition: none !important;
+  }
+
+  .door:hover .bub,
+  .mascot:hover .mole {
+    animation: none !important;
   }
 
   .door:hover,
