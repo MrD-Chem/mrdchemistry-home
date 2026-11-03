@@ -1,0 +1,619 @@
+/*
+  Recipe Builder (limiting reactant simulation). Layered on the shared assets/site.css.
+  Motion: short transform/opacity transitions only while a reaction runs; nothing loops.
+  "Reduce motion" turns every transition off.
+*/
+
+.rb {
+  --pink: #f472b6;
+  --pink-soft: rgba(244, 114, 182, 0.14);
+  --tile: 46px;
+}
+
+.rb main {
+  flex: 1;
+  padding-bottom: 32px;
+}
+
+.rb-head h1 {
+  margin: 4px 0 6px;
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem);
+}
+
+.rb-head .lead {
+  margin: 0 0 14px;
+  max-width: 60ch;
+}
+
+.rb-modes {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass);
+}
+
+.rb-modes a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.rb-modes a:hover {
+  color: var(--text);
+}
+
+.rb-modes a[aria-current="page"] {
+  background: var(--pink);
+  color: var(--on-accent);
+}
+
+.rb-label {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rb-dim {
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.rb-note {
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.rb-panel {
+  margin: 0 0 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--glass);
+}
+
+/* ---------- Reaction picker ---------- */
+
+.rb-picker {
+  margin-bottom: 14px;
+}
+
+.rb-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.rb-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 56px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rb-chip:hover {
+  border-color: var(--line-strong);
+  background: var(--glass-strong);
+}
+
+.rb-chip[aria-pressed="true"] {
+  border-color: var(--pink);
+  background: var(--pink-soft);
+}
+
+.rb-chip-name {
+  font-weight: 700;
+}
+
+.rb-chip-eq {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.rb-chip[aria-pressed="true"] .rb-chip-eq {
+  color: var(--text);
+}
+
+/* ---------- Recipe card ---------- */
+
+.rb-recipe-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+}
+
+.rb-recipe-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+}
+
+.rb-coef {
+  font-weight: 800;
+  font-size: 1.125rem;
+}
+
+.rb-formula {
+  font-weight: 700;
+}
+
+.rb-plus {
+  font-size: 1.25rem;
+  color: var(--muted);
+}
+
+.rb-yields {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--pink);
+}
+
+.rb-eq {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.rb-eq strong {
+  color: var(--text);
+}
+
+/* ---------- Reactor ---------- */
+
+.rb-reactor {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.rb-arrow {
+  align-self: center;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--pink);
+}
+
+.rb-tray {
+  grid-column: 1 / -1;
+  min-height: 1.6em;
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+.rb-bins {
+  display: grid;
+  gap: 10px;
+}
+
+.rb-bin {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.rb-bin-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.rb-bin-count {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.9375rem;
+}
+
+.rb-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: var(--tile);
+}
+
+.mol {
+  display: inline-flex;
+  width: var(--tile);
+  height: var(--tile);
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: transform 0.25s ease, opacity 0.25s ease, border-color 0.2s ease;
+}
+
+.mol svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mol .bond {
+  stroke: #cbd5e1;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.mol .atom {
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 1;
+}
+
+/* in the set that is reacting now */
+.mol.is-picked {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+  transform: scale(1.08);
+}
+
+/* used up by a completed set: an empty dashed slot */
+.mol.is-used {
+  border: 2px dashed var(--line-strong);
+  background: none;
+  transform: none;
+}
+
+.mol.is-used svg {
+  opacity: 0;
+}
+
+.mol.is-born {
+  animation: rb-pop 0.3s ease-out;
+}
+
+@keyframes rb-pop {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.rb-badge {
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+}
+
+.rb-badge:empty {
+  display: none;
+}
+
+.rb-bin.is-limiting {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+
+.rb-bin.is-limiting .rb-badge strong {
+  color: var(--bad);
+}
+
+.rb-bin.is-excess {
+  border-color: var(--teal);
+}
+
+.rb-bin.is-excess .rb-badge strong {
+  color: var(--teal);
+}
+
+.rb-bin.is-excess .mol.is-left {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.rb-bin--product {
+  border-color: rgba(244, 114, 182, 0.35);
+}
+
+/* ---------- Controls ---------- */
+
+.rb-controls {
+  margin-bottom: 14px;
+}
+
+.rb-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.rb-step {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  font-size: 1.375rem;
+}
+
+.rb-step:disabled,
+.rb-actions .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.rb-step-val {
+  min-width: 2ch;
+  font-weight: 800;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.rb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ---------- Sets possible bars ---------- */
+
+.rb-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.rb-bar-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 14rem) 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.rb-bar-track {
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.rb-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--teal);
+  transform-origin: left center;
+  transition: transform 0.4s ease;
+}
+
+.rb-bar-fill.is-limiting {
+  background: var(--bad);
+}
+
+/* ---------- Results and Predict ---------- */
+
+.rb-result p {
+  margin: 0 0 8px;
+}
+
+.rb-result p:last-child {
+  margin-bottom: 0;
+}
+
+.rb-done {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--good-soft);
+}
+
+.rb-done a,
+.rb-result a {
+  color: var(--text);
+}
+
+.rb-good { color: var(--good); }
+.rb-half { color: var(--amber); }
+.rb-bad { color: var(--bad); }
+
+.rb-predict {
+  border-color: rgba(244, 114, 182, 0.4);
+}
+
+.rb-round-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.rb-round-top h2:focus {
+  outline: none;
+}
+
+.rb-score {
+  margin: 0;
+  font-weight: 700;
+}
+
+.rb-prompt {
+  margin: 0;
+  font-size: 1.0625rem;
+}
+
+.rb-questions {
+  display: grid;
+  gap: 14px;
+}
+
+.rb-q {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rb-q legend,
+.rb-q label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.rb-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rb-choice {
+  min-height: 44px;
+  min-width: 64px;
+  padding: 8px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rb-choice[aria-pressed="true"] {
+  border-color: var(--pink);
+  background: var(--pink-soft);
+}
+
+.rb-choice.is-right {
+  border-color: var(--good);
+  background: var(--good-soft);
+}
+
+.rb-choice.is-wrong {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+
+.rb-amount {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.rb-amount input {
+  width: 9rem;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.125rem;
+}
+
+.rb-amount input.is-right { border-color: var(--good); }
+.rb-amount input.is-wrong { border-color: var(--bad); }
+
+.rb-unit {
+  font-weight: 700;
+}
+
+.rb-summary {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  border-color: rgba(244, 114, 182, 0.4);
+}
+
+.rb-summary img {
+  flex: none;
+}
+
+.rb-summary h2 {
+  margin: 0 0 6px;
+}
+
+.rb-summary h2:focus {
+  outline: none;
+}
+
+.rb-summary p {
+  margin: 0 0 12px;
+}
+
+/* ---------- Legend ---------- */
+
+.rb-legend ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.rb-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rb-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 720px) {
+  .rb { --tile: 40px; }
+
+  .rb-reactor {
+    grid-template-columns: 1fr;
+  }
+
+  .rb-arrow {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+
+  .rb-bar-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .rb-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mol,
+  .rb-bar-fill {
+    transition: none;
+  }
+
+  .mol.is-born {
+    animation: none;
+  }
+}

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Recipe Builder · Limiting Reactants · MR.D Chemistry</title>
+  <meta name="description" content="A limiting reactant simulation: load a reactor, press React, and watch which reactant runs out first.">
+  <meta name="theme-color" content="#08090b">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../assets/site.css?v=20261014">
+  <link rel="stylesheet" href="sim.css?v=20261103">
+</head>
+<body class="rb">
+  <header class="site-header">
+    <div class="wrap site-header-inner">
+      <a class="brand brand--small" href="https://mrdchemistry.com/">
+        <img class="brand-mark" src="../../../assets/favicon.svg" alt="" width="28" height="28">
+        <span>MR.D Chemistry</span>
+      </a>
+      <a class="header-link" href="../">← Back to the pathway</a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="rb-head">
+      <p class="eyebrow">Limiting Reactants · Simulation</p>
+      <h1>Recipe Builder</h1>
+      <p class="lead">A balanced equation is a recipe. Load the reactor, press <strong>React</strong>, and watch which reactant runs out first.</p>
+      <nav class="rb-modes" aria-label="Mode">
+        <a id="mode-explore" href="?mode=explore">Explore</a>
+        <a id="mode-predict" href="?mode=predict">Predict</a>
+      </nav>
+    </div>
+
+    <!-- Explore: pick a reaction -->
+    <section id="picker" class="rb-picker" aria-label="Pick a reaction" hidden>
+      <h2 class="rb-label">1. Pick a reaction</h2>
+      <div id="eq-list" class="rb-chips"></div>
+    </section>
+
+    <!-- Predict: round header and questions -->
+    <section id="predict" class="rb-panel rb-predict" aria-labelledby="round-title" hidden>
+      <div class="rb-round-top">
+        <h2 id="round-title" class="rb-label">Round 1 of 5</h2>
+        <p id="round-score" class="rb-score">Score: 0</p>
+      </div>
+      <p id="round-prompt" class="rb-prompt"></p>
+      <p id="round-note" class="rb-note" hidden></p>
+    </section>
+
+    <!-- The recipe card -->
+    <section class="rb-panel rb-recipe" aria-label="Recipe">
+      <h2 class="rb-label" id="recipe-label">The recipe (one set)</h2>
+      <p id="recipe" class="rb-recipe-line"></p>
+      <p id="eq-text" class="rb-eq"></p>
+    </section>
+
+    <!-- The reactor -->
+    <section class="rb-panel rb-reactor" aria-label="Reactor">
+      <div class="rb-side">
+        <h2 class="rb-label">Reactants</h2>
+        <div id="react-bins" class="rb-bins"></div>
+      </div>
+      <div class="rb-arrow" aria-hidden="true"><span>→</span></div>
+      <div class="rb-side">
+        <h2 class="rb-label">Products</h2>
+        <div id="prod-bins" class="rb-bins"></div>
+      </div>
+      <p id="tray" class="rb-tray" aria-hidden="true"></p>
+    </section>
+
+    <!-- Explore controls -->
+    <section id="controls" class="rb-controls" aria-label="Controls">
+      <div class="rb-actions">
+        <button id="btn-react" class="btn btn-primary btn-lg" type="button">React!</button>
+        <button id="btn-skip" class="btn btn-ghost" type="button" hidden>Skip animation</button>
+        <button id="btn-reset" class="btn btn-ghost" type="button">Reset</button>
+      </div>
+      <p id="need-all" class="rb-note" hidden>Add some of every reactant first.</p>
+    </section>
+
+    <!-- Predict questions -->
+    <section id="questions" class="rb-panel rb-questions" aria-label="Your prediction" hidden>
+      <fieldset class="rb-q">
+        <legend>a) Which reactant is the <strong>limiting reactant</strong>?</legend>
+        <div id="q-limit" class="rb-choices"></div>
+      </fieldset>
+      <div class="rb-q">
+        <label for="q-amount" id="q-amount-label">b) How much product forms?</label>
+        <div class="rb-amount">
+          <input id="q-amount" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+          <span id="q-unit" class="rb-unit"></span>
+        </div>
+      </div>
+      <div class="rb-actions">
+        <button id="btn-check" class="btn btn-primary btn-lg" type="button">Check and React!</button>
+        <button id="btn-next" class="btn btn-primary btn-lg" type="button" hidden>Next round →</button>
+      </div>
+      <p id="q-hint" class="rb-note" hidden>Pick a limiting reactant and type an amount.</p>
+    </section>
+
+    <!-- Sets possible -->
+    <section id="sets" class="rb-panel rb-sets" aria-labelledby="sets-title">
+      <h2 id="sets-title" class="rb-label">Sets possible <span class="rb-dim">(amount ÷ coefficient)</span></h2>
+      <div id="bars" class="rb-bars"></div>
+      <p class="rb-note">The reactant with the <strong>shortest bar</strong> runs out first. That's the limiting reactant.</p>
+    </section>
+
+    <!-- Results / feedback -->
+    <section id="result" class="rb-panel rb-result" aria-live="polite" hidden></section>
+
+    <!-- Predict summary -->
+    <section id="summary" class="rb-panel rb-summary" aria-live="polite" hidden>
+      <img src="../../../assets/professor-mole.svg" alt="" width="96" height="96">
+      <div>
+        <h2 id="summary-title">Nice work!</h2>
+        <p id="summary-text"></p>
+        <div class="rb-actions">
+          <a class="btn btn-primary" href="../">Back to the pathway</a>
+          <button id="btn-again" class="btn btn-ghost" type="button">Play again</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="rb-legend" aria-label="Atom colors">
+      <h2 class="rb-label">Atom colors</h2>
+      <ul id="legend"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>MR.D Chemistry · No accounts, no ads, no tracking</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/progress.js?v=20261103"></script>
+  <script src="sim.js?v=20261103"></script>
+</body>
+</html>

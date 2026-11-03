@@ -279,9 +279,9 @@ main::after {
   right: 0;
   bottom: 12px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 4px;
-  width: min(320px, calc(100% - 32px));
+  width: min(420px, calc(100% - 24px));
   margin: 0 auto;
   padding: 5px;
   border-radius: 999px;
@@ -295,7 +295,7 @@ main::after {
   justify-content: center;
   gap: 9px;
   min-height: 48px;
-  padding: 0 18px;
+  padding: 0 12px;
   border-radius: 999px;
   color: var(--ink);
   font-weight: 700;
@@ -318,6 +318,12 @@ main::after {
 .footer-nav .nav-notes::before {
   background: var(--violet);
   box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);
+}
+
+.top-nav .nav-pathways::before,
+.footer-nav .nav-pathways::before {
+  background: #f472b6;
+  box-shadow: 0 0 10px rgba(244, 114, 182, 0.8);
 }
 
 .top-nav a:hover,
@@ -586,6 +592,17 @@ main::after {
   --cta-ink: #2e1065;
 }
 
+.door--pathways {
+  --accent: #f472b6;
+  --accent-soft: rgba(244, 114, 182, 0.16);
+  --accent-glow: rgba(244, 114, 182, 0.6);
+  --liq-top: rgba(244, 114, 182, 0.44);
+  --liq-bot: rgba(131, 24, 67, 0.88);
+  --liq-glow: rgba(244, 114, 182, 0.4);
+  --cta-bot: #fce7f3;
+  --cta-ink: #500724;
+}
+
 /* the inside of the beaker: clips the liquid to the glass */
 .beaker {
   position: absolute;
@@ -703,6 +720,10 @@ main::after {
 
 .door--notes .door-cover {
   background: #15112a;
+}
+
+.door--pathways .door-cover {
+  background: #170a14;
 }
 
 .door-cover img {

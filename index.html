@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>MR.D Chemistry</title>
-  <meta name="description" content="MR.D Chemistry — chemistry made fun and easy. Practice games and class notes for Mr. D's students.">
+  <meta name="description" content="MR.D Chemistry — chemistry made fun and easy. Practice games, guided pathways and class notes for Mr. D's students.">
   <meta name="theme-color" content="#070a13">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css?v=20261014">
-  <link rel="stylesheet" href="assets/home.css?v=20261015f">
+  <link rel="stylesheet" href="assets/home.css?v=20261103">
 </head>
 <body class="home">
   <!-- Floating molecules and bubbles. Pure decoration: drawn once here, moved by CSS (assets/home.css).
@@ -94,6 +94,7 @@
         <nav class="top-nav" aria-label="Site">
           <a class="nav-games" href="https://games.mrdchemistry.com/">Games</a>
           <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
+          <a class="nav-pathways" href="pathways/">Pathways</a>
         </nav>
       </div>
     </div>
@@ -104,12 +105,12 @@
       <div class="hero-text">
         <p class="eyebrow glass">Welcome to the lab</p>
         <h2 id="hero-title">Chemistry made <span class="fun">fun</span> and <span class="easy">easy</span></h2>
-        <p class="lead">Practice with quick games on a Chromebook, iPad, or phone. Class notes are coming soon.</p>
+        <p class="lead">Practice with quick games on a Chromebook, iPad, or phone, or follow a guided pathway through a topic. Class notes are coming soon.</p>
       </div>
 
       <figure class="mascot">
         <figcaption class="say">
-          Hi, I’m <strong>Professor Mole</strong>! Pick a game to practice. Class notes are on the way. Goggles on, let’s go!
+          Hi, I’m <strong>Professor Mole</strong>! Pick a game to practice, or try a pathway for a step-by-step tour. Goggles on, let’s go!
         </figcaption>
         <div class="mascot-stage">
           <img class="mole" src="assets/professor-mole.svg" alt="Professor Mole, a friendly mole in lab goggles and a lab coat, holding a flask" width="120" height="120">
@@ -160,6 +161,27 @@
           </span>
         </a>
       </li>
+      <li>
+        <a class="door door--pathways glass" href="pathways/">
+          <span class="beaker" aria-hidden="true">
+            <span class="beaker-liquid">
+              <svg class="meniscus" viewBox="0 0 400 16" preserveAspectRatio="none" focusable="false"><use href="#meniscus"/></svg>
+              <span class="bub bub-1"></span>
+              <span class="bub bub-2"></span>
+              <span class="bub bub-3"></span>
+            </span>
+          </span>
+          <span class="door-cover">
+            <img src="assets/cover-pathways.svg" alt="" width="480" height="200">
+            <span class="door-tag">New</span>
+          </span>
+          <span class="door-body">
+            <span class="door-title">Pathways</span>
+            <span class="door-blurb">Step-by-step paths through a topic: notes, a simulation, a game and a quick check.</span>
+            <span class="door-cta" aria-hidden="true">Start a pathway <span class="arrow">→</span></span>
+          </span>
+        </a>
+      </li>
     </ul>
 
     <section class="featured wrap" aria-labelledby="featured-title">
@@ -204,6 +226,7 @@
         <nav class="footer-nav" aria-label="Footer">
           <a class="nav-games" href="https://games.mrdchemistry.com/">Games</a>
           <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
+          <a class="nav-pathways" href="pathways/">Pathways</a>
         </nav>
         <p class="footer-legal dot-list"><span>© 2026 MR.D Chemistry</span><span>No accounts, no ads, no tracking</span></p>
       </div>
