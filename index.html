@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>MR.D Chemistry</title>
-  <meta name="description" content="MR.D Chemistry — chemistry made fun and easy. Practice games, guided pathways and class notes for Mr. D's students.">
+  <title>Mr. D Chemistry</title>
+  <meta name="description" content="Mr. D Chemistry — chemistry made fun and easy. Practice games, guided pathways and class notes for Mr. D's students.">
   <meta name="theme-color" content="#070a13">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261014">
-  <link rel="stylesheet" href="assets/home.css?v=20261103">
+  <link rel="stylesheet" href="assets/site.css?v=20261115">
+  <link rel="stylesheet" href="assets/home.css?v=20261115">
 </head>
 <body class="home">
   <!-- Floating molecules and bubbles. Pure decoration: drawn once here, moved by CSS (assets/home.css).
-       The <symbol>s also hold the liquid surface (meniscus) used in the Games / Notes beakers. -->
+       The <symbol>s also hold the liquid surface (meniscus) used in the Games / Pathways / Notes beakers. -->
   <div class="lab-bg" aria-hidden="true">
     <svg class="sprite" width="0" height="0" focusable="false">
       <defs>
@@ -89,12 +89,12 @@
       <div class="bar">
         <h1 class="brand">
           <img class="brand-mark" src="assets/favicon.svg" alt="" width="40" height="40">
-          <span>MR.D Chemistry</span>
+          <span>Mr. D Chemistry</span>
         </h1>
         <nav class="top-nav" aria-label="Site">
           <a class="nav-games" href="https://games.mrdchemistry.com/">Games</a>
-          <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
           <a class="nav-pathways" href="pathways/">Pathways</a>
+          <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
         </nav>
       </div>
     </div>
@@ -105,12 +105,12 @@
       <div class="hero-text">
         <p class="eyebrow glass">Welcome to the lab</p>
         <h2 id="hero-title">Chemistry made <span class="fun">fun</span> and <span class="easy">easy</span></h2>
-        <p class="lead">Practice with quick games on a Chromebook, iPad, or phone, or follow a guided pathway through a topic. Class notes are coming soon.</p>
+        <p class="lead">Practice with quick games on a Chromebook, iPad, or phone, or follow a guided pathway through a topic.</p>
       </div>
 
       <figure class="mascot">
         <figcaption class="say">
-          Hi, I’m <strong>Professor Mole</strong>! Pick a game to practice, or try a pathway for a step-by-step tour. Goggles on, let’s go!
+          Hi, I’m <strong>Professor Mole</strong>! Pick a game or try a pathway. Goggles on, let’s go!
         </figcaption>
         <div class="mascot-stage">
           <img class="mole" src="assets/professor-mole.svg" alt="Professor Mole, a friendly mole in lab goggles and a lab coat, holding a flask" width="120" height="120">
@@ -135,29 +135,8 @@
           </span>
           <span class="door-body">
             <span class="door-title">Games</span>
-            <span class="door-blurb">Balance equations, dash past variables, and level up your science skills.</span>
+            <span class="door-blurb">Play. Practice. Level up.</span>
             <span class="door-cta" aria-hidden="true">Play games <span class="arrow">→</span></span>
-          </span>
-        </a>
-      </li>
-      <li>
-        <a class="door door--notes glass" href="https://notes.mrdchemistry.com/">
-          <span class="beaker" aria-hidden="true">
-            <span class="beaker-liquid">
-              <svg class="meniscus" viewBox="0 0 400 16" preserveAspectRatio="none" focusable="false"><use href="#meniscus"/></svg>
-              <span class="bub bub-1"></span>
-              <span class="bub bub-2"></span>
-              <span class="bub bub-3"></span>
-            </span>
-          </span>
-          <span class="door-cover">
-            <img src="assets/cover-notes.svg" alt="" width="480" height="200">
-            <span class="door-tag">Coming soon</span>
-          </span>
-          <span class="door-body">
-            <span class="door-title">Notes</span>
-            <span class="door-blurb">Class notes and study guides for Mr. D’s chemistry classes, all in one place.</span>
-            <span class="door-cta" aria-hidden="true">See what’s coming <span class="arrow">→</span></span>
           </span>
         </a>
       </li>
@@ -177,37 +156,61 @@
           </span>
           <span class="door-body">
             <span class="door-title">Pathways</span>
-            <span class="door-blurb">Step-by-step paths through a topic: notes, a simulation, a game and a quick check.</span>
+            <span class="door-blurb">Learn step by step.</span>
             <span class="door-cta" aria-hidden="true">Start a pathway <span class="arrow">→</span></span>
           </span>
         </a>
       </li>
+      <li>
+        <div class="door door--notes glass">
+          <span class="beaker" aria-hidden="true">
+            <span class="beaker-liquid">
+              <svg class="meniscus" viewBox="0 0 400 16" preserveAspectRatio="none" focusable="false"><use href="#meniscus"/></svg>
+            </span>
+          </span>
+          <span class="door-cover">
+            <img src="assets/cover-notes.svg" alt="" width="480" height="200">
+            <span class="door-tag">Coming soon</span>
+          </span>
+          <span class="door-body">
+            <span class="door-title">Notes</span>
+            <span class="door-blurb">Class notes and study guides are on the way.</span>
+          </span>
+        </div>
+      </li>
     </ul>
 
+    <!-- New unit: edit the text in h2#featured-title below. In each feature-list <li>,
+         edit the <a href>, <img src> (keep alt="" for decorative art), both feature-tag
+         spans (subject/topic), feature-title, and feature-blurb. Copy a whole <li>
+         to add a game, or remove one to drop it. Keep the All games link unchanged. -->
     <section class="featured wrap" aria-labelledby="featured-title">
       <div class="featured-head">
-        <h2 id="featured-title">Featured games</h2>
+        <div>
+          <p class="eyebrow">In class now</p>
+          <h2 id="featured-title">Unit 4: Atomic Structure</h2>
+        </div>
         <a class="see-all glass" href="https://games.mrdchemistry.com/">All games <span aria-hidden="true">→</span></a>
       </div>
       <ul class="feature-list">
         <li>
-          <a class="feature feature--violet glass" href="https://games.mrdchemistry.com/games/balance-quest/">
-            <span class="feature-art"><img src="assets/great-scale.svg" alt="" width="128" height="120"></span>
+          <a class="feature glass" href="https://games.mrdchemistry.com/games/particle-dash/">
+            <span class="feature-art"><img src="assets/cover-particle-dash.svg" alt="" width="320" height="180"></span>
             <span class="feature-body">
-              <span class="feature-tag dot-list"><span>Chemistry</span><span>Chemical Reactions</span></span>
-              <span class="feature-title">Balance Quest</span>
-              <span class="feature-blurb">Balance chemical equations to open the way in a 3D puzzle adventure.</span>
+              <span class="feature-tag dot-list"><span>Chemistry</span><span>Atomic Structure</span></span>
+              <span class="feature-title">Particle Count Dash</span>
+              <span class="feature-blurb">Read the symbol, count the protons, neutrons and electrons, and keep your streak alive.</span>
             </span>
             <span class="feature-go" aria-hidden="true"><span class="arrow">→</span></span>
           </a>
         </li>
         <li>
-          <a class="feature feature--amber glass" href="https://games.mrdchemistry.com/games/quiz-dash/">
-            <span class="feature-art"><img src="assets/variable-dash.svg" alt="" width="120" height="120"></span>
+          <a class="feature feature--amber glass" href="https://games.mrdchemistry.com/games/isotope-mixer/">
+            <span class="feature-art"><img src="assets/cover-isotope-mixer.svg" alt="" width="320" height="180"></span>
             <span class="feature-body">
-              <span class="feature-tag dot-list"><span>Physical Science</span><span>Experimental Design</span></span>
-              <span class="feature-title">Experimental Design Variable Dash</span>
-              <span class="feature-blurb">Run, jump and duck while you spot independent and dependent variables.</span>
+              <span class="feature-tag dot-list"><span>Chemistry</span><span>Atomic Structure</span></span>
+              <span class="feature-title">Isotope Mixer</span>
+              <span class="feature-blurb">Fill a sample with isotopes and watch the balance point show the average atomic mass.</span>
             </span>
             <span class="feature-go" aria-hidden="true"><span class="arrow">→</span></span>
           </a>
@@ -221,14 +224,9 @@
       <div class="footer-inner glass">
         <p class="footer-brand">
           <img class="brand-mark" src="assets/favicon.svg" alt="" width="32" height="32">
-          <span><strong>MR.D Chemistry</strong><br><span class="footer-tagline">Chemistry made fun and easy</span></span>
+          <span><strong>Mr. D Chemistry</strong><br><span class="footer-tagline">Chemistry made fun and easy</span></span>
         </p>
-        <nav class="footer-nav" aria-label="Footer">
-          <a class="nav-games" href="https://games.mrdchemistry.com/">Games</a>
-          <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
-          <a class="nav-pathways" href="pathways/">Pathways</a>
-        </nav>
-        <p class="footer-legal dot-list"><span>© 2026 MR.D Chemistry</span><span>No accounts, no ads, no tracking</span></p>
+        <p class="footer-legal dot-list"><span>© 2026 Mr. D Chemistry</span><span>No accounts, no ads, no tracking</span></p>
       </div>
     </div>
   </footer>

@@ -10,11 +10,12 @@
       720px and up: the floating header bar, and only after the page has scrolled 40px
       and content slides under it (a CSS scroll timeline shows a frost layer; no JavaScript).
       Browsers without scroll timelines get a darker, unblurred bar.
-      Phones: the floating Games / Notes tab bar at the bottom of the screen.
+      Phones: the floating Games / Pathways / Notes tab bar at the bottom of the screen.
     Any blurred surface on screen is redrawn on every animation frame, so the cards,
     speech bubble and "Coming soon" tag are tinted, not blurred.
-  - The Games / Notes cards are glass beakers: coloured liquid with a meniscus, measuring
-    marks and a few rising bubbles. The liquid sloshes once when the page opens.
+  - The destination cards are glass beakers: coloured liquid with a meniscus and
+    measuring marks. Linked cards have rising bubbles and slosh once on page load;
+    the dimmed Notes beaker holds still.
   - Motion: transform/opacity only. Molecules and bubbles drift in the side margins, never
     behind a blurred surface; on phones the beakers hold still because the tab bar floats
     over them. Where the browser can tell (Chrome 133+) the motion pauses once the page is
@@ -58,7 +59,7 @@ main::after,
   pointer-events: none;
 }
 
-/* hero + Games/Notes: measured from the top of <main> */
+/* hero + destination cards: measured from the top of <main> */
 main::before {
   top: -110px;
   bottom: 0;
@@ -74,7 +75,7 @@ main::before {
     radial-gradient(320px 200px at 52% 1000px, rgba(251, 191, 36, 0.22), rgba(251, 191, 36, 0) 70%);
 }
 
-/* featured games: measured from the bottom of <main> */
+/* class games: measured from the bottom of <main> */
 main::after {
   bottom: -40px;
   height: 640px;
@@ -271,7 +272,7 @@ main::after {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22), 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* phones: Games / Notes float in a glass tab bar at the bottom of the screen */
+/* phones: Games / Pathways / Notes float in a glass tab bar at the bottom of the screen */
 .top-nav {
   position: fixed;
   z-index: 30;
@@ -293,9 +294,9 @@ main::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 7px;
   min-height: 48px;
-  padding: 0 12px;
+  padding: 0 8px;
   border-radius: 999px;
   color: var(--ink);
   font-weight: 700;
@@ -304,8 +305,7 @@ main::after {
   transition: background-color 0.2s ease;
 }
 
-.top-nav a::before,
-.footer-nav a::before {
+.top-nav a::before {
   content: "";
   width: 9px;
   height: 9px;
@@ -314,14 +314,12 @@ main::after {
   box-shadow: 0 0 10px rgba(45, 212, 191, 0.8);
 }
 
-.top-nav .nav-notes::before,
-.footer-nav .nav-notes::before {
+.top-nav .nav-notes::before {
   background: var(--violet);
   box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);
 }
 
-.top-nav .nav-pathways::before,
-.footer-nav .nav-pathways::before {
+.top-nav .nav-pathways::before {
   background: #f472b6;
   box-shadow: 0 0 10px rgba(244, 114, 182, 0.8);
 }
@@ -336,16 +334,22 @@ main::after {
 
 .hero {
   display: grid;
-  gap: 18px;
-  padding-top: 26px;
-  padding-bottom: 28px;
+  gap: 12px;
+  padding-top: 12px;
+  padding-bottom: 16px;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .eyebrow.glass {
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 16px;
+  margin: 0 0 10px;
   padding: 6px 14px 6px 10px;
   border-radius: 999px;
   color: #fcd34d;
@@ -365,12 +369,12 @@ main::after {
 }
 
 .hero h2 {
-  margin: 0 0 14px;
+  margin: 0 0 10px;
   font-family: var(--sans);
-  font-size: clamp(2.45rem, 1.45rem + 3.9vw, 4.15rem);
+  font-size: clamp(2rem, 1.3rem + 3vw, 3.4rem);
   font-weight: 800;
   line-height: 1.02;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
   text-shadow: 0 2px 18px rgba(7, 10, 19, 0.55);
 }
@@ -539,7 +543,7 @@ main::after {
   to { opacity: 1; transform: none; }
 }
 
-/* ---------- Big Games / Notes cards ---------- */
+/* ---------- Big Games / Pathways / Notes cards ---------- */
 
 .doors {
   display: grid;
@@ -582,14 +586,25 @@ main::after {
 }
 
 .door--notes {
-  --accent: var(--violet);
   --accent-soft: rgba(167, 139, 250, 0.16);
-  --accent-glow: rgba(167, 139, 250, 0.6);
   --liq-top: rgba(167, 139, 250, 0.44);
   --liq-bot: rgba(76, 29, 149, 0.88);
   --liq-glow: rgba(167, 139, 250, 0.4);
-  --cta-bot: #ece6ff;
-  --cta-ink: #2e1065;
+  color: var(--ink-2);
+}
+
+/* Notes rests until it is ready; keep text opaque and dim only decoration. */
+.door--notes .door-cover img {
+  filter: saturate(0.3);
+  opacity: 0.55;
+}
+
+.door--notes .beaker {
+  opacity: 0.2;
+}
+
+.door--notes .beaker-liquid {
+  animation: none;
 }
 
 .door--pathways {
@@ -688,7 +703,7 @@ main::after {
 }
 
 /* accent ring + glow, faded in on hover (opacity only) */
-.door::after,
+.door[href]::after,
 .feature::after {
   content: "";
   position: absolute;
@@ -703,7 +718,7 @@ main::after {
   pointer-events: none;
 }
 
-.door:hover {
+.door[href]:hover {
   color: var(--ink);
 }
 
@@ -713,7 +728,8 @@ main::after {
   display: block;
   overflow: hidden;
   border-radius: 22px;
-  aspect-ratio: 480 / 200;
+  height: 120px;
+  flex: none;
   background: #0b1416;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 10px 22px -12px rgba(0, 0, 0, 0.7);
 }
@@ -730,6 +746,7 @@ main::after {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
   transition: transform 0.35s ease;
 }
 
@@ -791,12 +808,12 @@ main::after {
   font-size: 1.75rem;
   font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 .door-blurb {
-  margin-bottom: 40px; /* the button floats in the liquid; the words stay above it */
+  margin-bottom: 16px; /* leave a little air above the liquid and button */
   color: var(--ink-2);
   line-height: 1.5;
   text-wrap: pretty;
@@ -842,13 +859,12 @@ main::after {
 .door:focus-visible,
 .feature:focus-visible,
 .see-all:focus-visible,
-.top-nav a:focus-visible,
-.footer-nav a:focus-visible {
+.top-nav a:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 4px;
 }
 
-/* ---------- Featured games ---------- */
+/* ---------- This unit in class ---------- */
 
 .featured {
   margin-top: 56px;
@@ -868,7 +884,7 @@ main::after {
   font-family: var(--sans);
   font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
 .see-all.glass {
@@ -907,10 +923,8 @@ main::after {
   --accent-hi: #ddd6fe;
   --accent-soft: rgba(167, 139, 250, 0.3);
   --accent-glow: rgba(167, 139, 250, 0.55);
-  --vial-top: rgba(167, 139, 250, 0.5);
-  --vial-bot: rgba(76, 29, 149, 0.88);
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr) auto;
   align-items: start; /* side-by-side cards: tags and titles line up */
   gap: 14px;
   width: 100%;
@@ -927,8 +941,6 @@ main::after {
   --accent-hi: #fde68a;
   --accent-soft: rgba(251, 191, 36, 0.28);
   --accent-glow: rgba(251, 191, 36, 0.5);
-  --vial-top: rgba(251, 191, 36, 0.42);
-  --vial-bot: rgba(146, 64, 14, 0.85);
 }
 
 .feature:hover {
@@ -937,6 +949,7 @@ main::after {
 
 /* app-icon style tile: a smaller lens nested in the card */
 .feature-art {
+  overflow: hidden;
   display: grid;
   place-items: center;
   width: 64px;
@@ -949,28 +962,11 @@ main::after {
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), inset 0 -10px 16px -12px var(--accent), 0 8px 18px -10px rgba(0, 0, 0, 0.7);
 }
 
-/* coloured liquid in the bottom of the tile, with a bright meniscus line */
-.feature-art {
-  position: relative;
-  overflow: hidden;
-}
-
-.feature-art::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 36%;
-  border-top: 1.5px solid rgba(255, 255, 255, 0.5);
-  background: linear-gradient(180deg, var(--vial-top), var(--vial-bot));
-}
-
 .feature-art img {
-  position: relative;
   display: block;
-  width: 50px;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .feature-body {
@@ -1005,8 +1001,8 @@ main::after {
 }
 
 .feature-go {
-  display: none;
   align-self: center;
+  color: var(--accent-hi);
 }
 
 /* ---------- Footer ---------- */
@@ -1054,32 +1050,6 @@ main::after {
   font-size: 0.875rem;
 }
 
-.footer-nav {
-  display: flex;
-  gap: 8px;
-}
-
-.footer-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 0 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  color: var(--ink);
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-}
-
-.footer-nav a:hover {
-  background-color: rgba(255, 255, 255, 0.14);
-  color: #fff;
-}
-
 .footer-legal {
   flex-basis: 100%;
   padding-top: 14px;
@@ -1116,21 +1086,21 @@ main::after {
 /* ---------- Hover: only on devices that really hover ---------- */
 
 @media (hover: hover) and (pointer: fine) {
-  .door:hover,
+  .door[href]:hover,
   .feature:hover {
     transform: translateY(-4px);
   }
 
-  .door:hover::after,
+  .door[href]:hover::after,
   .feature:hover::after {
     opacity: 1;
   }
 
-  .door:hover .door-cover img {
+  .door[href]:hover .door-cover img {
     transform: scale(1.04);
   }
 
-  .door:hover .arrow,
+  .door[href]:hover .arrow,
   .feature:hover .arrow {
     transform: translateX(4px);
   }
@@ -1141,7 +1111,7 @@ main::after {
 
   /* wake the settled lab back up while the pointer is on it */
   .mascot:hover .mole,
-  .door:hover .bub {
+  .door[href]:hover .bub {
     animation-iteration-count: infinite;
   }
 }
@@ -1160,7 +1130,111 @@ main::after {
     padding-bottom: 76px;
   }
 
-  /* top layer: hero + Games/Notes only; it ends where <main> ends, so nothing reaches its bottom edge */
+  .hero .lead {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .mascot {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 12px;
+    margin: 0;
+  }
+
+  .mascot-stage {
+    width: 112px;
+    height: 112px;
+  }
+
+  .mascot-stage::before,
+  .mascot-stage::after {
+    bottom: 12px;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+  }
+
+  .mole {
+    width: 92px;
+    margin-left: -46px;
+  }
+
+  .say {
+    padding: 8px 10px;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .doors {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .door {
+    --liquid-h: 30px;
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    border-radius: 24px;
+  }
+
+  .door-cover {
+    width: 104px;
+    height: 104px;
+    border-radius: 16px;
+  }
+
+  .door-tag {
+    top: auto;
+    bottom: 4px;
+    right: 4px;
+    left: 4px;
+    justify-content: center;
+    min-height: 26px;
+    padding: 3px;
+    font-size: 0.625rem;
+    letter-spacing: 0;
+  }
+
+  .door-tag::before,
+  .door-body::before {
+    display: none;
+  }
+
+  .door-body {
+    min-width: 0;
+    gap: 4px;
+    padding: 0;
+  }
+
+  .door-title {
+    font-size: 1.375rem;
+  }
+
+  .door-blurb {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .door-cta {
+    min-height: 44px;
+    gap: 6px;
+    padding: 0 6px 0 12px;
+    font-size: 0.875rem;
+  }
+
+  .door-cta .arrow {
+    width: 28px;
+    height: 28px;
+  }
+
+  .featured {
+    margin-top: 32px;
+  }
+
+  /* top layer: hero + destination cards only; it ends where <main> ends, so nothing reaches its bottom edge */
   main::before {
     background:
       radial-gradient(260px 260px at 0% 150px, rgba(45, 212, 191, 0.28), rgba(45, 212, 191, 0) 70%),
@@ -1170,7 +1244,7 @@ main::after {
       radial-gradient(300px 220px at 100% 1060px, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0) 70%);
   }
 
-  /* bottom layer: Notes card + featured games, measured up from the end of <main> */
+  /* bottom layer: Notes card + class games, measured up from the end of <main> */
   main::after {
     height: 700px;
     background:
@@ -1213,7 +1287,7 @@ main::after {
 
 @media (max-width: 559px) {
   .feature {
-    grid-template-columns: 60px minmax(0, 1fr);
+    grid-template-columns: 60px minmax(0, 1fr) auto;
     gap: 12px;
   }
 
@@ -1222,13 +1296,9 @@ main::after {
     height: 60px;
     border-radius: 17px;
   }
-
-  .feature-art img {
-    width: 46px;
-  }
 }
 
-@media (min-width: 560px) {
+@media (min-width: 720px) {
   .mascot {
     grid-template-columns: 200px minmax(0, 1fr);
     gap: 20px;
@@ -1257,7 +1327,9 @@ main::after {
     max-width: 24rem;
     font-size: 1.0625rem;
   }
+}
 
+@media (min-width: 560px) {
   .feature {
     grid-template-columns: 84px minmax(0, 1fr) auto;
     gap: 16px;
@@ -1268,10 +1340,6 @@ main::after {
     width: 84px;
     height: 84px;
     border-radius: 20px;
-  }
-
-  .feature-art img {
-    width: 66px;
   }
 
   /* a small round lens with the accent arrow */
@@ -1292,7 +1360,7 @@ main::after {
   }
 }
 
-/* tablets and up: the brand and Games / Notes share one floating glass bar */
+/* tablets and up: the brand and Games / Pathways / Notes share one floating glass bar */
 @media (min-width: 720px) {
   /* a card reached with Tab (or Shift+Tab) is scrolled fully into view, clear of
      the sticky bar, so its focus ring is never cut off or hidden under the bar */
@@ -1356,7 +1424,7 @@ main::after {
     height: 40px;
   }
 
-  /* the nav is just two capsules inside the bar now, not a glass bar of its own */
+  /* the nav is three capsules inside the bar now, not a glass bar of its own */
   .top-nav {
     position: static;
     display: flex;
@@ -1374,7 +1442,7 @@ main::after {
     display: none;
   }
 
-  /* Games / Notes: small glass capsules inside the bar */
+  /* Games / Pathways / Notes: small glass capsules inside the bar */
   .top-nav {
     gap: 8px;
   }
@@ -1391,7 +1459,7 @@ main::after {
   }
 
   .hero {
-    padding-top: 36px;
+    padding-top: 20px;
   }
 
   .mol {
@@ -1427,15 +1495,15 @@ main::after {
 /* laptops and up: text left, Professor Mole right */
 @media (min-width: 900px) {
   .hero {
-    grid-template-columns: minmax(0, 1fr) 380px;
+    grid-template-columns: minmax(0, 1fr) 320px;
     align-items: center;
     gap: 32px;
-    padding-top: 28px;
-    padding-bottom: 40px;
+    padding-top: 16px;
+    padding-bottom: 20px;
   }
 
   .hero .lead {
-    font-size: 1.1875rem;
+    font-size: 1.125rem;
   }
 
   .mascot {
@@ -1444,27 +1512,27 @@ main::after {
       "say"
       "stage";
     justify-items: center;
-    gap: 14px;
+    gap: 10px;
     margin: 0;
   }
 
   .mascot-stage {
-    width: 340px;
-    height: 244px;
+    width: 250px;
+    height: 164px;
   }
 
   .mascot-stage::before,
   .mascot-stage::after {
-    bottom: 22px;
-    width: 230px;
-    height: 230px;
-    margin-left: -115px;
+    bottom: 12px;
+    width: 152px;
+    height: 152px;
+    margin-left: -76px;
   }
 
   .mole {
-    bottom: 13px;
-    width: 216px;
-    margin-left: -108px;
+    bottom: 6px;
+    width: 148px;
+    margin-left: -74px;
   }
 
   .say {
@@ -1493,18 +1561,15 @@ main::after {
   }
 
   .door-body {
-    padding: 18px 44px 14px 16px;
+    padding: 12px 30px 10px 12px;
   }
 
-  .door-title {
-    font-size: 2rem;
-  }
 }
 
 @media (min-width: 1280px) {
   .fizz-5 {
     display: block;
-    top: 372px;
+    top: 300px;
     right: calc(50% - 442px);
     width: 14px;
     animation-name: rise-short;
@@ -1618,23 +1683,22 @@ main::after {
   .feature,
   .door-cover img,
   .arrow,
-  .door::after,
+  .door[href]::after,
   .feature::after,
   .glass::before,
-  .top-nav a,
-  .footer-nav a {
+  .top-nav a {
     transition: none !important;
   }
 
-  .door:hover .bub,
+  .door[href]:hover .bub,
   .mascot:hover .mole {
     animation: none !important;
   }
 
-  .door:hover,
+  .door[href]:hover,
   .feature:hover,
-  .door:hover .door-cover img,
-  .door:hover .arrow,
+  .door[href]:hover .door-cover img,
+  .door[href]:hover .arrow,
   .feature:hover .arrow {
     transform: none !important;
   }

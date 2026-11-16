@@ -4,28 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Pathways | MR.D Chemistry</title>
+  <title>Pathways — Mr. D Chemistry</title>
   <meta name="description" content="Guided chemistry paths: notes, a simulation, a game and a quick check.">
   <meta name="theme-color" content="#08090b">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/site.css?v=20261103">
-  <link rel="stylesheet" href="./assets/pathways.css?v=20261103">
+  <link rel="stylesheet" href="../assets/site-bar.css?v=20261115b">
+  <link rel="stylesheet" href="./assets/pathways.css?v=20261115">
   <script src="./assets/progress.js?v=20261103" defer></script>
   <script src="./assets/hub.js?v=20261103" defer></script>
 </head>
-<body class="pathways">
+<body class="pathways has-site-bar">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
+  <header class="site-bar-wrap">
     <div class="wrap">
-      <div class="site-header-inner">
-        <a class="brand" href="../">
-          <img class="brand-mark" src="../assets/favicon.svg" alt="" width="40" height="40">
-          <span>MR.D Chemistry</span>
+      <div class="site-bar">
+        <a class="site-bar-brand" href="https://mrdchemistry.com/">
+          <img src="../assets/favicon.svg" alt="" width="40" height="40">
+          <span>Mr. D Chemistry</span>
         </a>
-        <nav class="top-nav" aria-label="Site"><a href="https://games.mrdchemistry.com/">Games</a>
-          <a href="https://notes.mrdchemistry.com/">Notes</a>
-          <a href="./" aria-current="page">Pathways</a></nav>
+        <nav class="site-bar-nav" aria-label="Site">
+          <a class="nav-games" href="https://games.mrdchemistry.com/">Games</a>
+          <a class="nav-pathways" href="https://mrdchemistry.com/pathways/" aria-current="page">Pathways</a>
+          <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
+        </nav>
       </div>
     </div>
   </header>
@@ -53,16 +56,6 @@
     <p class="muted reset-area">Progress stays in this browser. On a shared device, reset the pathway before you begin.</p>
     <noscript><p class="notice">Turn on JavaScript to save and display your progress. You can still open the pathway and read the notes.</p></noscript>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <div class="footer-inner">
-        <p class="footer-brand"><img class="brand-mark" src="../assets/favicon.svg" alt="" width="32" height="32"><span><strong>MR.D Chemistry</strong><br>Chemistry made fun and easy</span></p>
-        <nav class="footer-nav" aria-label="Footer"><a href="https://games.mrdchemistry.com/">Games</a>
-          <a href="https://notes.mrdchemistry.com/">Notes</a>
-          <a href="./">Pathways</a></nav>
-        <p class="footer-legal">© 2026 MR.D Chemistry · No accounts, no ads, no tracking</p>
-      </div>
-    </div>
-  </footer>
+  <footer class="site-foot"><div class="wrap"><p>© 2026 Mr. D Chemistry · No accounts, no ads, no tracking</p></div></footer>
 </body>
 </html>

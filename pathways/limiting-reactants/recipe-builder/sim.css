@@ -15,9 +15,15 @@
   padding-bottom: 32px;
 }
 
+.rb .back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-bottom: 8px;
+}
+
 .rb-head h1 {
   margin: 4px 0 6px;
-  font-family: var(--serif);
   font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem);
 }
 

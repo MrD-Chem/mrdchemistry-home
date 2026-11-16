@@ -1,21 +1,7 @@
 /* Pathways: static rose-tinted glass, shared by the hub, lesson and check. */
 :root { --rose: #f472b6; --rose-soft: rgba(244, 114, 182, 0.13); }
-body.pathways {
-  background-color: var(--bg);
-  background-image: radial-gradient(45rem 30rem at 95% 10rem, rgba(244,114,182,.13), transparent 75%), radial-gradient(40rem 30rem at 0 30rem, rgba(167,139,250,.10), transparent 75%);
-}
-.pathways a { color: var(--rose); }
-.pathways a:hover { color: #fbcfe8; }
-.pathways .brand { color: var(--text); min-height: 44px; }
-.pathways .site-header-inner, .pathways .footer-inner {
-  padding: 14px 20px; border: 1px solid var(--line-strong); border-radius: 22px;
-  background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 16px 36px -24px #000;
-}
-.pathways .brand { font-size: 1.25rem; }
-.pathways .top-nav, .pathways .footer-nav { display: flex; flex-wrap: wrap; gap: 4px; }
-.pathways .top-nav a, .pathways .footer-nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; border-radius: 999px; color: var(--muted); text-decoration: none; }
-.pathways .top-nav a[aria-current], .pathways .top-nav a:hover, .pathways .footer-nav a:hover { color: var(--text); background: var(--rose-soft); }
+.pathways main a { color: var(--rose); }
+.pathways main a:hover { color: #fbcfe8; }
 .skip-link { position: absolute; top: -100px; left: 16px; z-index: 10; padding: 12px 18px; background: var(--bg-raised); }
 .skip-link:focus { top: 10px; }
 .pathways main { padding-top: 24px; }
@@ -107,9 +93,6 @@ body.pathways {
 .feedback p { margin: 0; }
 .quiz-actions { margin-top: 24px; }
 .score { font-size: 3rem; font-weight: 700; color: var(--rose); margin: 8px 0; }
-.pathways .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
-.pathways .footer-brand { display: flex; align-items: center; gap: 12px; }
-.pathways .footer-legal { width: 100%; }
 @media (max-width: 760px) {
   .pathway-grid, .pathway-layout { grid-template-columns: minmax(0, 1fr); }
   .pathway-layout { gap: 24px; }
@@ -117,9 +100,6 @@ body.pathways {
   .mole-note img { width: 80px; height: 80px; margin: 0; flex: none; }
 }
 @media (max-width: 440px) {
-  .pathways .site-header-inner { padding: 12px; gap: 8px; }
-  .pathways .top-nav { width: 100%; }
-  .pathways .top-nav a { flex: 1; }
   .station { padding-left: 50px; }
   .station-body { padding: 16px; }
   .station-number { width: 38px; height: 38px; }
@@ -131,5 +111,5 @@ body.pathways {
   .pathways *, .pathways *::before, .pathways *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 @media (prefers-contrast: more), (prefers-reduced-transparency: reduce) {
-  .pathways .panel, .pathways .card, .pathways .station-body, .pathways .site-header-inner, .pathways .footer-inner { background: var(--bg-raised); border-color: var(--muted); }
+  .pathways .panel, .pathways .card, .pathways .station-body { background: var(--bg-raised); border-color: var(--muted); }
 }
