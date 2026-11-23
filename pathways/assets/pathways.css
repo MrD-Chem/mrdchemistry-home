@@ -18,7 +18,8 @@
 .pathways .panel-pad { padding: clamp(20px, 4vw, 32px); }
 .pathways .muted { color: var(--muted); }
 .pathways .back-link { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 8px; }
-.pathway-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+.pathway-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.pathway-grid .coming-soon { grid-column: 1 / -1; }
 .pathways .pathway-card { --accent: var(--rose); --accent-soft: var(--rose-soft); padding: 28px; gap: 16px; }
 .pathway-card h2 { font-size: 2rem; }
 .pathway-card p { margin: 0; }

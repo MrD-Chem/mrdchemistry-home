@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Pathways — Mr. D Chemistry</title>
-  <meta name="description" content="Guided chemistry paths: notes, a simulation, a game and a quick check.">
+  <meta name="description" content="Guided chemistry paths through each topic, one step at a time.">
   <meta name="theme-color" content="#08090b">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/site.css?v=20261103">
   <link rel="stylesheet" href="../assets/site-bar.css?v=20261115b">
-  <link rel="stylesheet" href="./assets/pathways.css?v=20261115">
-  <script src="./assets/progress.js?v=20261103" defer></script>
-  <script src="./assets/hub.js?v=20261103" defer></script>
+  <link rel="stylesheet" href="./assets/pathways.css?v=20261123">
+  <script src="./assets/progress.js?v=20261123" defer></script>
+  <script src="./assets/hub.js?v=20261123" defer></script>
 </head>
 <body class="pathways has-site-bar">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,24 +36,32 @@
     <section class="intro" aria-labelledby="title">
       <p class="eyebrow">One topic. Step by step.</p>
       <h1 id="title">Pathways</h1>
-      <p class="lead">Guided paths through each topic: notes, a simulation, a game and a quick check.</p>
+      <p class="lead">Guided paths through each topic, one step at a time: hands-on activities, practice and quick checks.</p>
     </section>
     <div class="pathway-grid">
-      <article class="card pathway-card" data-status="ready" aria-labelledby="lr-title">
+      <article class="card pathway-card" data-status="ready" data-pathway-card="limiting-reactants" aria-labelledby="lr-title">
         <p class="eyebrow">Chemistry · Stoichiometry</p>
         <h2 id="lr-title">Limiting Reactants</h2>
         <p class="card-blurb">Which ingredient runs out first? Follow the recipe from sandwiches to chemical reactions.</p>
         <div class="pathway-preview" aria-hidden="true"><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span></div>
-        <div><span id="hub-progress">0 of 5 steps done</span><progress id="hub-meter" value="0" max="5" aria-labelledby="hub-progress"></progress></div>
+        <div><span class="hub-progress" id="lr-progress">0 of 5 steps done</span><progress value="0" max="5" aria-labelledby="lr-progress"></progress></div>
         <div class="card-actions"><a class="btn btn-play" href="limiting-reactants/">Open pathway <span aria-hidden="true">→</span></a></div>
+      </article>
+      <article class="card pathway-card" data-status="ready" data-pathway-card="ionic-naming" aria-labelledby="in-title">
+        <p class="eyebrow">Chemistry · Ionic Compounds</p>
+        <h2 id="in-title">Ionic Naming and Polyatomics</h2>
+        <p class="card-blurb">Snap ion puzzle pieces together, then discover the rules for writing formulas and names.</p>
+        <div class="pathway-preview" aria-hidden="true"><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span><span class="preview-line"></span><span class="preview-dot"></span></div>
+        <div><span class="hub-progress" id="in-progress">0 of 4 steps done</span><progress value="0" max="4" aria-labelledby="in-progress"></progress></div>
+        <div class="card-actions"><a class="btn btn-play" href="ionic-naming/">Open pathway <span aria-hidden="true">→</span></a></div>
       </article>
       <section class="coming-soon" aria-labelledby="soon-title">
         <p class="eyebrow">Still in the lab</p>
         <h2 id="soon-title">More pathways coming soon</h2>
-        <p>More topics, more discoveries. Start with limiting reactants while we build what’s next.</p>
+        <p>More topics, more discoveries. Pick a pathway while we build what’s next.</p>
       </section>
     </div>
-    <p class="muted reset-area">Progress stays in this browser. On a shared device, reset the pathway before you begin.</p>
+    <p class="muted reset-area">Progress stays in this browser. On a shared device, reset a pathway before you begin.</p>
     <noscript><p class="notice">Turn on JavaScript to save and display your progress. You can still open the pathway and read the notes.</p></noscript>
   </main>
   <footer class="site-foot"><div class="wrap"><p>© 2026 Mr. D Chemistry · No accounts, no ads, no tracking</p></div></footer>

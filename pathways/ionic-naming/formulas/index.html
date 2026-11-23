@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Part I: Writing Formulas — Ionic Naming and Polyatomics — Mr. D Chemistry</title>
+  <meta name="description" content="Build neutral ionic compounds with ion puzzle pieces and discover how to write their formulas.">
+  <meta name="theme-color" content="#08090b">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../assets/site.css?v=20261103">
+  <link rel="stylesheet" href="../../../assets/site-bar.css?v=20261115b">
+  <link rel="stylesheet" href="../../../pathways/assets/pathways.css?v=20261123">
+  <link rel="stylesheet" href="../assets/ionic.css?v=20261123">
+  <script src="../../assets/progress.js?v=20261123" defer></script>
+  <script src="../assets/ionic.js?v=20261123" defer></script>
+</head>
+<body class="pathways ionic has-site-bar" data-part="formulas">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar-wrap">
+    <div class="wrap">
+      <div class="site-bar">
+        <a class="site-bar-brand" href="https://mrdchemistry.com/">
+          <img src="../../../assets/favicon.svg" alt="" width="40" height="40">
+          <span>Mr. D Chemistry</span>
+        </a>
+        <nav class="site-bar-nav" aria-label="Site">
+          <a class="nav-games" href="https://games.mrdchemistry.com/">Games</a>
+          <a class="nav-pathways" href="https://mrdchemistry.com/pathways/" aria-current="page">Pathways</a>
+          <a class="nav-notes" href="https://notes.mrdchemistry.com/">Notes</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main id="main" class="wrap">
+    <a class="back-link" href="../">← Ionic Naming and Polyatomics</a>
+    <section class="intro" aria-labelledby="title">
+      <p class="eyebrow">Part I · Writing Formulas</p>
+      <h1 id="title">Writing Formulas</h1>
+      <p class="lead">Snap ion pieces together until the charges cancel, then look for the pattern.</p>
+    </section>
+    <div class="ws">
+      <div class="panel panel-pad ws-top">
+        <div><label for="student-name">Your name</label><input id="student-name" type="text" autocomplete="name" spellcheck="false"></div>
+        <button class="btn btn-ghost" type="button" data-print>Print / Save as PDF</button>
+      </div>
+      <section class="panel panel-pad ws-q why-panel" aria-label="Why?">
+        <p class="why"><strong>Why?</strong> Since prehistoric times, people have experimented with chemical processes to make better tools, pottery and weapons. In the Middle Ages, alchemists combined compounds searching for the philosopher’s stone and the elixir of life. As chemistry became a true science, chemists realized that all matter is made of atoms and that chemical processes just rearrange atoms. They needed a simple way to show this, so they created <strong>chemical formulas</strong>. <span class="muted">(Introduction adapted from POGIL.)</span></p>
+      </section>
+      <section class="panel panel-pad ws-q" aria-labelledby="q1-h">
+        <h2 id="q1-h"><span class="qn">1.</span>Define the following words</h2>
+        <label class="field-label" for="q1-ion">Ion</label><textarea id="q1-ion" rows="2"></textarea>
+        <label class="field-label" for="q1-cation">Cation</label><textarea id="q1-cation" rows="2"></textarea>
+        <label class="field-label" for="q1-anion">Anion</label><textarea id="q1-anion" rows="2"></textarea>
+      </section>
+      <section class="panel panel-pad ws-q lab" aria-labelledby="lab-title">
+        <h2 id="lab-title"><span class="qn">2.</span>Binary ionic compounds</h2>
+        <p>Use the <strong>yellow</strong> pieces. Each piece is as tall as its charge: every <strong>+</strong> is a tooth and every <strong>&minus;</strong> is a notch. Build several different <em>types</em> of neutral compounds made of <strong>only 2 different elements</strong>. When the edges fit with no gaps, record the compound and fill in the table.</p>
+        <div class="lab-grid">
+          <div class="tray">
+            <h3 id="tray-cat-label">Cations <span class="sr-only">(tap to add)</span></h3>
+            <div class="tray-list tray-cat" role="group" aria-labelledby="tray-cat-label"></div>
+            <h3 id="tray-an-label">Anions <span class="sr-only">(tap to add)</span></h3>
+            <div class="tray-list tray-an" role="group" aria-labelledby="tray-an-label"></div>
+            <p class="muted">Tap a piece to put it on the board. Tap a piece on the board to take it off.</p>
+          </div>
+          <div class="board-wrap">
+            <div class="board" aria-label="Puzzle board">
+              <div class="col col-cat" role="group" aria-label="Cations on the board"></div>
+              <div class="col col-an" role="group" aria-label="Anions on the board"></div>
+            </div>
+            <p class="lab-status" role="status" aria-live="polite"></p>
+            <div class="lab-actions">
+              <button class="btn btn-rose" type="button" data-record disabled>Record this compound</button>
+              <button class="btn btn-ghost" type="button" data-clear>Clear board</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-scroll"><table class="ws-table record-table"><caption class="sr-only">Compounds you built</caption><thead></thead><tbody></tbody></table></div>
+        <div class="check-row"><button class="btn btn-ghost" type="button" data-check-rows>Check my table</button><p class="record-msg" role="status"></p><p class="muted rows-left"></p></div>
+      </section>
+      <section class="panel panel-pad ws-q" aria-labelledby="q3-h">
+        <h2 id="q3-h"><span class="qn">3.</span>In your formulas, which ion was listed first? Which was listed second?</h2>
+        <label class="sr-only" for="q3">Your answer</label>
+        <textarea id="q3" rows="3"></textarea>
+      </section>
+      <section class="panel panel-pad ws-q" aria-labelledby="q4-h">
+        <h2 id="q4-h"><span class="qn">4. Rule #1:</span>Can you see a rule for how many cations are needed to balance the anions?</h2>
+        <label class="sr-only" for="q4">Your rule</label>
+        <textarea id="q4" rows="4" placeholder="Write your rule in your own words."></textarea>
+        <div class="checkpoint" id="cp1" data-needs="q4" data-unlocks="zone1">
+          <p class="cp-title">Teacher check</p>
+          <form class="cp-form" novalidate>
+            <p>Before you go on, share your rule with your teacher. They’ll type the class code to unlock the next part.</p>
+            <label for="cp1-code">Teacher code</label>
+            <div class="cp-row"><input class="cp-code no-save" id="cp1-code" type="password" inputmode="numeric" autocomplete="off"><button class="btn btn-rose" type="submit">Unlock</button></div>
+            <p class="cp-msg" role="status"></p>
+          </form>
+          <p class="cp-done" hidden>✓ Checked by your teacher</p>
+        </div>
+      </section>
+      <p class="lock-note" data-lock-note="zone1">🔒 The rest of this part unlocks after your teacher checks your rule.</p>
+      <div class="locked-zone" id="zone1">
+        <section class="panel panel-pad ws-q" id="q5" aria-labelledby="q5-h">
+          <h2 id="q5-h"><span class="qn">5.</span>Predict the formulas of the neutral compounds formed</h2>
+          <p>Each box is the compound of the cation at the top and the anion on the left.</p>
+          <div class="table-scroll"><table class="ws-table grid-table">
+            <thead><tr><th scope="col"><span class="sr-only">Anion</span></th><th scope="col">Na<sup>+1</sup></th><th scope="col">H<sup>+1</sup></th><th scope="col">Ca<sup>2+</sup></th><th scope="col">Zn<sup>2+</sup></th><th scope="col">Al<sup>3+</sup></th></tr></thead>
+            <tbody>
+            <tr><th scope="row">Cl<sup>&minus;1</sup></th><td><input id="q5-nacl" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="NaCl" aria-label="Formula for Na +1 and Cl  minus1"></td><td><input id="q5-hcl" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="HCl" aria-label="Formula for H +1 and Cl  minus1"></td><td><input id="q5-cacl" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="CaCl2" aria-label="Formula for Ca 2+ and Cl  minus1"></td><td><input id="q5-zncl" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="ZnCl2" aria-label="Formula for Zn 2+ and Cl  minus1"></td><td><input id="q5-alcl" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="AlCl3" aria-label="Formula for Al 3+ and Cl  minus1"></td></tr>
+            <tr><th scope="row">Br<sup>&minus;1</sup></th><td><input id="q5-nabr" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="NaBr" aria-label="Formula for Na +1 and Br  minus1"></td><td><input id="q5-hbr" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="HBr" aria-label="Formula for H +1 and Br  minus1"></td><td><input id="q5-cabr" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="CaBr2" aria-label="Formula for Ca 2+ and Br  minus1"></td><td><input id="q5-znbr" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="ZnBr2" aria-label="Formula for Zn 2+ and Br  minus1"></td><td><input id="q5-albr" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="AlBr3" aria-label="Formula for Al 3+ and Br  minus1"></td></tr>
+            <tr><th scope="row">O<sup>2&minus;</sup></th><td><input id="q5-nao" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Na2O" aria-label="Formula for Na +1 and O 2 minus"></td><td><input id="q5-ho" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="H2O" aria-label="Formula for H +1 and O 2 minus"></td><td><input id="q5-cao" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="CaO" aria-label="Formula for Ca 2+ and O 2 minus"></td><td><input id="q5-zno" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="ZnO" aria-label="Formula for Zn 2+ and O 2 minus"></td><td><input id="q5-alo" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Al2O3" aria-label="Formula for Al 3+ and O 2 minus"></td></tr>
+            <tr><th scope="row">S<sup>2&minus;</sup></th><td><input id="q5-nas" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Na2S" aria-label="Formula for Na +1 and S 2 minus"></td><td><input id="q5-hs" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="H2S" aria-label="Formula for H +1 and S 2 minus"></td><td><input id="q5-cas" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="CaS" aria-label="Formula for Ca 2+ and S 2 minus"></td><td><input id="q5-zns" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="ZnS" aria-label="Formula for Zn 2+ and S 2 minus"></td><td><input id="q5-als" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Al2S3" aria-label="Formula for Al 3+ and S 2 minus"></td></tr>
+            <tr><th scope="row">P<sup>3&minus;</sup></th><td><input id="q5-nap" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Na3P" aria-label="Formula for Na +1 and P 3 minus"></td><td><input id="q5-hp" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="H3P|PH3" aria-label="Formula for H +1 and P 3 minus"></td><td><input id="q5-cap" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Ca3P2" aria-label="Formula for Ca 2+ and P 3 minus"></td><td><input id="q5-znp" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="Zn3P2" aria-label="Formula for Zn 2+ and P 3 minus"></td><td><input id="q5-alp" type="text" class="cell-in" autocomplete="off" spellcheck="false" autocapitalize="off" data-kind="formula" data-answer="AlP" aria-label="Formula for Al 3+ and P 3 minus"></td></tr>
+            </tbody>
+          </table></div>
+          <div class="check-row"><button class="btn btn-ghost" type="button" data-check="q5">Check</button><p class="check-result" role="status"></p></div>
+        </section>
+        <section class="panel panel-pad finish" aria-labelledby="finish-h">
+          <img src="../../../assets/professor-mole.svg" alt="" width="88" height="88">
+          <div>
+            <h2 id="finish-h">Done with Part I?</h2>
+            <p class="muted">Print or save your work if your teacher wants a copy. Your answers also stay saved in this browser.</p>
+          </div>
+          <a class="btn btn-rose" href="../" data-finish>Finish Part I → Back to the pathway</a>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="site-foot"><div class="wrap"><p>© 2026 Mr. D Chemistry · No accounts, no ads, no tracking</p></div></footer>
+</body>
+</html>

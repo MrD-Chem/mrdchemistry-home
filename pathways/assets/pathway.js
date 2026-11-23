@@ -1,12 +1,13 @@
 (function () {
   'use strict';
-  var id = 'limiting-reactants';
+  var id = document.body.getAttribute('data-pathway') || 'limiting-reactants';
   var notes = document.getElementById('finish-notes');
   if (notes) {
     notes.addEventListener('click', function () { window.MRDProgress.markDone(id, 'notes'); });
     return;
   }
-  var steps = ['notes', 'explore', 'predict', 'game', 'quiz'];
+  var steps = window.MRDProgress.steps(id);
+  var total = steps.length;
   var reset = document.getElementById('reset-progress');
   var cancel = document.getElementById('cancel-reset');
   var armed = false;
@@ -18,9 +19,9 @@
   function render() {
     var progress = window.MRDProgress.get(id);
     var count = steps.filter(function (step) { return progress.done[step]; }).length;
-    document.getElementById('progress-count').textContent = count + ' of 5 steps done';
+    document.getElementById('progress-count').textContent = count + ' of ' + total + ' steps done';
     document.getElementById('pathway-meter').value = count;
-    document.getElementById('completion').hidden = count !== 5;
+    document.getElementById('completion').hidden = count !== total;
     steps.forEach(function (step, index) {
       var station = document.getElementById('step-' + step);
       var state = progress.done[step] ? 'done' : (index === 0 || progress.done[steps[index - 1]] ? 'next' : 'locked');
@@ -41,13 +42,13 @@
   reset.addEventListener('click', function () {
     if (!armed) {
       armed = true;
-      reset.textContent = 'Are you sure? Reset all 5 steps';
+      reset.textContent = 'Are you sure? Reset all ' + total + ' steps';
       cancel.hidden = false;
       return;
     }
     window.MRDProgress.reset(id);
     disarm();
-    document.getElementById('reset-message').textContent = 'Progress reset. Start fresh with the notes.';
+    document.getElementById('reset-message').textContent = (document.body.getAttribute('data-reset-message') || 'Progress reset. Start fresh with the notes.');
   });
   cancel.addEventListener('click', disarm);
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape') disarm(); });

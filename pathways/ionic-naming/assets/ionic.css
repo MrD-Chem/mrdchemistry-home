@@ -1,0 +1,188 @@
+/*
+  Ionic Naming and Polyatomics: puzzle board + digital worksheet.
+  Layered on site.css, site-bar.css and pathways.css. No endless animation.
+*/
+
+.ionic {
+  --yellow: #fcd34d;
+  --blue: #93c5fd;
+  --pink-tile: #f9a8d4;
+  --tile-ink: #0b0d12;
+}
+
+/* ---------- Worksheet layout ---------- */
+.ws { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 8px; }
+.ws > *, .locked-zone > *, .lab-grid > * { min-width: 0; }
+.ws-top { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; justify-content: space-between; }
+.ws-top label { display: block; font-weight: 600; margin-bottom: 6px; }
+.ws-top input { width: min(320px, 100%); }
+.ws-q h2 { font-family: var(--sans); font-weight: 800; letter-spacing: -0.02em; font-size: clamp(1.2rem, 2.6vw, 1.5rem); margin-bottom: 12px; }
+.ws-q h2 .qn { color: var(--rose); margin-right: 6px; }
+.ws-q h3 { font-family: var(--sans); font-size: 1.05rem; margin: 18px 0 8px; }
+.ws-q > p { max-width: 72ch; }
+.ws-q p:last-child { margin-bottom: 0; }
+.why { max-width: 72ch; }
+.why strong { color: var(--rose); }
+
+.ws input[type="text"], .ws input[type="password"], .ws textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #747780;
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  color: var(--text);
+  font: inherit;
+}
+.ws textarea { min-height: 96px; resize: vertical; line-height: 1.5; }
+.ws input::placeholder, .ws textarea::placeholder { color: #8b9099; }
+.field-label { display: block; font-weight: 600; margin: 14px 0 6px; }
+.field-label:first-of-type { margin-top: 0; }
+
+/* ---------- Tables ---------- */
+.table-scroll { position: relative; overflow-x: auto; margin-top: 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.ws-table { width: 100%; border-collapse: collapse; min-width: 480px; }
+.ws-table.narrow { min-width: 0; max-width: 560px; }
+.ws-table th, .ws-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.ws-table thead th { background: rgba(255, 255, 255, 0.05); font-size: .875rem; color: var(--muted); }
+.ws-table tbody th { font-weight: 700; white-space: nowrap; }
+.ws-table tr:last-child td, .ws-table tr:last-child th { border-bottom: 0; }
+.ws-table td > span.ion-text, .ws-table tbody th { line-height: 44px; }
+.ws-table .cell-in { min-width: 7rem; }
+.example-row td { color: var(--muted); font-style: italic; line-height: 44px; }
+.example-tag { font-size: .75rem; font-style: normal; text-transform: uppercase; letter-spacing: .06em; color: var(--rose); }
+.row-remove { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: transparent; color: var(--muted); font-size: 1.25rem; cursor: pointer; }
+.row-remove:hover { color: var(--text); border-color: var(--line-strong); }
+.fx-preview { display: block; min-height: 1.4em; margin-top: 4px; font-size: .95rem; color: var(--muted); }
+.fx-preview:empty { display: none; }
+.mark { display: inline-block; margin-top: 4px; font-weight: 800; }
+.cell-hint { display: block; font-size: .8125rem; color: #fecdd3; margin-top: 2px; max-width: 22ch; }
+.cell-hint:empty { display: none; }
+.is-right { border-color: var(--good) !important; }
+.is-right ~ .mark { color: var(--good); }
+.is-wrong { border-color: var(--bad) !important; }
+.is-wrong ~ .mark { color: var(--bad); }
+.check-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; }
+.check-result, .record-msg { margin: 0; font-weight: 600; }
+
+/* prediction grid (question 5) */
+.grid-table { min-width: 560px; }
+.grid-table thead th { text-align: center; color: var(--text); font-size: 1rem; }
+.grid-table .cell-in { min-width: 5.5rem; text-align: center; }
+.grid-table td { text-align: center; }
+.grid-table tbody th { background: rgba(255, 255, 255, 0.05); }
+
+/* roman numerals (question 13) */
+.roman-tables { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.roman-tables .table-scroll { margin-top: 0; }
+.roman-tables .ws-table { min-width: 0; }
+.roman-tables .cell-in { width: 6rem; min-width: 0; }
+
+/* ---------- Ion puzzle board ---------- */
+.lab { --unit: 44px; --tooth: 14px; --tile-w: 132px; }
+.lab-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 360px); gap: 20px; align-items: start; margin-top: 14px; }
+.tray h3 { margin: 0 0 8px; font-family: var(--sans); font-size: .8125rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tray h3 + .tray-list { margin-bottom: 16px; }
+.tray-list { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+.tray-btn {
+  --unit: 22px; --tooth: 8px; --tile-w: 84px;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; padding: 6px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--glass); cursor: pointer;
+}
+.tray-btn:hover { border-color: var(--line-strong); background: var(--glass-strong); }
+.tray-btn .tile { font-size: .9rem; }
+.tray-btn .tile.u1 { min-height: 32px; }
+.flip-row { margin: 0 0 14px; }
+
+.board-wrap { position: sticky; top: 12px; }
+.board {
+  display: flex; justify-content: center; align-items: flex-start;
+  min-height: calc(var(--unit) * 3 + 40px);
+  padding: 20px 12px;
+  border: 2px dashed var(--line-strong); border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.18);
+  transition: border-color .2s, background-color .2s;
+}
+.board.is-neutral { border-style: solid; border-color: var(--good); background: var(--good-soft); }
+.col { display: flex; flex-direction: column; width: var(--tile-w); }
+.col-an { margin-left: calc(var(--tooth) * -1); filter: drop-shadow(-3px 0 0 rgba(0, 0, 0, 0.45)); }
+.slot { display: grid; place-items: center; height: calc(var(--unit) * 2); border: 1px dashed var(--line-strong); border-radius: 8px; color: var(--muted); font-size: .875rem; }
+.col-an .slot { margin-left: var(--tooth); }
+.tile-btn { display: block; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; width: 100%; }
+.tile-btn:hover .tile { filter: brightness(1.08); }
+.lab-status { min-height: 3em; margin: 12px 0 0; font-size: .9375rem; color: var(--muted); }
+.lab-status[data-tone="good"] { color: var(--good); font-weight: 600; }
+.lab-status[data-tone="warn"] { color: var(--amber); }
+.lab-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+/* The pieces. Height = charge; every unit of charge is one ">" tooth or notch. */
+.tile {
+  display: flex; align-items: center; justify-content: center;
+  width: var(--tile-w); height: var(--unit);
+  color: var(--tile-ink); font-weight: 800; line-height: 1.1; text-align: center;
+}
+.tile + .tile, .tile-btn + .tile-btn .tile { box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.3); }
+.tile.u2 { height: calc(var(--unit) * 2); }
+.tile.u3 { height: calc(var(--unit) * 3); }
+.tile.cat { padding-right: var(--tooth); }
+.tile.an { padding-left: var(--tooth); }
+.tile-face { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0 4px; }
+.tile-ion sup { font-size: .7em; margin-left: 1px; }
+.tile-ion sub { font-size: .7em; }
+.tile-name { font-size: .72rem; font-weight: 600; }
+.t-yellow { background: var(--yellow); }
+.t-blue { background: var(--blue); }
+.t-pink { background: var(--pink-tile); }
+
+.tile.cat.u1 { clip-path: polygon(0 0, calc(100% - var(--tooth)) 0, 100% 50%, calc(100% - var(--tooth)) 100%, 0 100%); }
+.tile.cat.u2 { clip-path: polygon(0 0, calc(100% - var(--tooth)) 0, 100% 25%, calc(100% - var(--tooth)) 50%, 100% 75%, calc(100% - var(--tooth)) 100%, 0 100%); }
+.tile.cat.u3 { clip-path: polygon(0 0, calc(100% - var(--tooth)) 0, 100% 16.667%, calc(100% - var(--tooth)) 33.333%, 100% 50%, calc(100% - var(--tooth)) 66.667%, 100% 83.333%, calc(100% - var(--tooth)) 100%, 0 100%); }
+.tile.an.u1 { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--tooth) 50%); }
+.tile.an.u2 { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--tooth) 75%, 0 50%, var(--tooth) 25%); }
+.tile.an.u3 { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--tooth) 83.333%, 0 66.667%, var(--tooth) 50%, 0 33.333%, var(--tooth) 16.667%); }
+
+/* ---------- Teacher checkpoint + locked parts ---------- */
+.checkpoint { margin-top: 16px; padding: 16px; border: 2px solid var(--rose); border-radius: var(--radius-sm); background: var(--rose-soft); max-width: 560px; }
+.checkpoint.is-approved { border-color: var(--good); background: var(--good-soft); }
+.cp-title { font-weight: 800; margin: 0 0 4px; }
+.cp-form p { margin: 0 0 10px; color: var(--muted); }
+.cp-form label { display: block; font-weight: 600; margin-bottom: 6px; }
+.cp-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.cp-row input { flex: 1 1 140px; max-width: 220px; }
+.cp-msg { margin: 8px 0 0; color: #fecdd3; min-height: 1.2em; }
+.cp-done { margin: 0; color: var(--good); font-weight: 700; }
+.lock-note { margin: 0; padding: 14px 16px; border: 1px dashed var(--line-strong); border-radius: var(--radius-sm); color: var(--muted); }
+.locked-zone { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.locked-zone.is-locked { opacity: .4; filter: grayscale(.6); user-select: none; }
+
+.finish { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.finish img { flex: none; }
+.finish p { margin: 0; }
+
+@media (max-width: 860px) {
+  .lab-grid { grid-template-columns: minmax(0, 1fr); }
+  .board-wrap { position: static; }
+}
+@media (max-width: 440px) {
+  .lab { --tile-w: 120px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .board { transition: none; }
+}
+
+/* ---------- Print / Save as PDF ---------- */
+@media print {
+  @page { margin: 14mm; }
+  body, .ionic { background: #fff !important; color: #000 !important; }
+  .site-bar-wrap, .site-foot, .skip-link, .back-link, .lab-grid, .lab-actions, .lab-status, .flip-row,
+  .btn, .row-remove, .check-row button, .cp-form, .lock-note, .finish img, .no-print { display: none !important; }
+  .panel, .card, .ws-q { background: none !important; border: 1px solid #999 !important; box-shadow: none !important; break-inside: avoid; }
+  .ws input[type="text"], .ws textarea { background: #fff !important; color: #000 !important; border: 1px solid #999 !important; }
+  .ws-table thead th, .grid-table tbody th { background: #eee !important; color: #000 !important; }
+  .locked-zone.is-locked { opacity: 1; filter: none; }
+  .fx-preview, .cell-hint, .muted, .ws-table thead th { color: #333 !important; }
+  .pathways .eyebrow, .ws-q h2 .qn, .example-tag { color: #000 !important; }
+  .table-scroll { overflow: visible; border-color: #999; }
+}
